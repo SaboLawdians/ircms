@@ -1,0 +1,404 @@
+<script src="./js/xlsx.core.min.js"></script>
+<script src="./js/FileSaver.js"></script>
+<script src="./node_modules/tableexport/dist/js/tableexport.js"></script>
+<link rel="stylesheet" href="/node_modules/tableexport/dist/css/tableexport.css" />
+<div class="container-fluid user-list">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">출금 대기 내역</h1>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">
+        출금 대기 목록<button type="button" class="btn btn-default btn-danger float-right calculareBtn">
+          승인 내역 정산
+        </button>
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th nowrap>등급</th>
+              <th nowrap>회원 아이디</th>
+              <th nowrap>이름</th>
+              <th nowrap>출금 신청액</th>
+              <th nowrap>상태</th>
+              <th nowrap>신청일</th>
+              <th nowrap>출금승인</th>
+            </tr>
+          </thead>
+          <tbody id="boardContents"></tbody>
+        </table>
+        <div class="text-center my-4 my-md-3" id="pageContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">검색 영역</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <tbody>
+            <tr>
+              <th nowrap class="text-center" style="vertical-align: middle;">
+                대기/승인/거절
+              </th>
+              <td nowrap>
+                <select class="form-control" id="jobGroupSelect">
+                  <option value="-" selected>전체</option>
+                  <option value="0">대기중</option>
+                  <option value="1">승인</option>
+                  <option value="2">거절</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th nowrap class="text-center" style="vertical-align: middle;">
+                검색 조건
+              </th>
+              <td nowrap>
+                <select class="form-control" id="keywordSelect">
+                  <option value="-" selected>전체</option>
+                  <option value="1">아이디</option>
+                  <option value="2">이름</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" nowrap>
+                <div class="input-group">
+                  <input type="text" id="searchVal" class="form-control" placeholder="아이디 or 이름" />
+                  <div class="input-group-append">
+                    <button type="button" id="SearchBtn" class="btn btn-primary">
+                      search
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="modal fade" id="depositBtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                  출금 승인 확인
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                출금 대기 내역을 승인하시겠습니까?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  취소
+                </button>
+                <button type="button" value="2" class="btn btn-danger withdrawSubmit">
+                  거절
+                </button>
+                <button type="button" value="1" class="btn btn-primary withdrawSubmit">
+                  승인
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var page = "<%= page %>";
+  var html = "";
+  var pageHtml = "";
+  var selectVal = "-"; // 직군분류 선택 값
+  var searchVal = ""; // 검색란 값
+  var searchSelectVal = ""; // 검색조건 값
+  $(function () {
+    $(".left-menu")
+      .siblings()
+      .removeClass("active");
+    $(".left-menu")
+      .eq(5)
+      .addClass("active");
+    getUserList(selectVal, page, searchSelectVal, searchVal);
+  });
+  // 직군분류 selct box
+  $("#jobGroupSelect").change(function (e) {
+    if (selectVal != e.target.value) {
+      page = 1;
+    }
+    searchSelectVal = $("#keywordSelect option:selected").val();
+    searchVal = $("#searchVal").val();
+    selectVal = e.target.value;
+
+    $("#boardContents").text("");
+    $("#pageContainer").text("");
+    getUserList(selectVal, page, searchSelectVal, searchVal);
+  });
+
+  $("#SearchBtn").click(function () {
+    selectVal = $("#jobGroupSelect option:selected").val();
+    searchSelectVal = $("#keywordSelect option:selected").val();
+    searchVal = $.trim($("#searchVal").val());
+    jobGroupSelectTrigger(page, selectVal, searchVal, searchSelectVal);
+  });
+
+  function jobGroupSelectTrigger(
+    index,
+    selectValParam,
+    searchValParam,
+    searchSelectValParam
+  ) {
+    page = index;
+    selectVal = selectValParam;
+    searchVal = searchValParam;
+    searchSelectVal = searchSelectValParam;
+    $("#jobGroupSelect")
+      .val(selectVal)
+      .trigger("change");
+    searchVal = "";
+  }
+
+  function memberInfo(member_no) {
+    location.href = "/userInfo?member_no = " + member_no;
+  }
+
+  $("#depositBtn").on("show.bs.modal", function (e) {
+    var button = $(e.relatedTarget);
+    var standbyNo = button.data("no");
+    var memberNo = button.data("member");
+    var deposit = button.data("deposit");
+    $("#depositBtn").attr("standbyNo", standbyNo);
+    $("#depositBtn").attr("memberNo", memberNo);
+    $("#depositBtn").attr("deposit", deposit);
+  });
+
+  $(".withdrawSubmit").click(function (e) {
+    e.preventDefault();
+    var stand_by_no = $("#depositBtn").attr("standbyNo");
+    var memberNo = $("#depositBtn").attr("memberNo");
+    var withdraw = $("#depositBtn").attr("deposit");
+    var type = $(this).val();
+    $.post(
+      "/userWithdrawApproval",
+      {
+        withdraw_stand_by_no: stand_by_no,
+        member_no: memberNo,
+        withdraw: withdraw,
+        type: type
+      },
+      function (cb) {
+        if (cb.result === "success") {
+          customBootBox("danger", "알림", "변경 성공", "/getWithdrawList");
+        } else {
+          customBootBox("danger", "알림", cb.msg, "");
+        }
+      }
+    );
+  });
+
+  function getUserList(selectVal, page, searchSelectVal, searchVal) {
+    $.get(
+      "getWithdrawList",
+      {
+        selectVal: selectVal,
+        page: page,
+        searchSelectVal: searchSelectVal,
+        searchVal: searchVal
+      },
+      function (cb) {
+        if (cb.result) {
+          var html = "";
+          var pageHtml = "";
+          if (cb.contents.length > 0) {
+            cb.contents.forEach(function (item, idx) {
+              switch (item.member_grade) {
+                case 1:
+                  item.member_grade = "본사";
+                  break;
+                case 2:
+                  item.member_grade = "정회원";
+                  break;
+                case 3:
+                  item.member_grade = "준회원";
+                  break;
+              }
+              html += "<tr>";
+              html +=
+                "<td nowrap>" +
+                item.member_grade +
+                "</td>" +
+                '<td nowrap><a href="/userInfo?member_no=' +
+                item.member_no +
+                '">' +
+                item.member_id +
+                "</td>" +
+                "<td nowrap>" +
+                item.member_name +
+                "[" +
+                item.member_no +
+                "]</td>" +
+                "<td nowrap>" +
+                comma(item.withdraw) +
+                "</td>" +
+                "<td nowrap>" +
+                (item.withdraw_complete == 0
+                  ? "대기"
+                  : item.withdraw_complete == 1
+                    ? "승인"
+                    : "거절") +
+                "</td>" +
+                "<td nowrap>" +
+                item.reg_date +
+                "</td>" +
+                '<td nowrap class="py-1"> <button type="button" id="modalOpenBtn" class="btn ' +
+                (item.withdraw_complete == 0
+                  ? "btn-secondary"
+                  : item.withdraw_complete == 1
+                    ? "btn-primary"
+                    : "btn-danger") +
+                '" data-toggle="modal" data-deposit ="' +
+                item.withdraw +
+                '" data-member="' +
+                item.member_no +
+                '" data-no="' +
+                item.withdraw_stand_by_no +
+                '" data-target="' +
+                (item.withdraw_complete == 0 ? "#depositBtn" : "") +
+                '">' +
+                (item.withdraw_complete == 0
+                  ? "대기"
+                  : item.withdraw_complete == 1
+                    ? "승인"
+                    : "거절") +
+                "</button></td>" +
+                "</tr>";
+            });
+          } else {
+            html += "<tr>";
+            html +=
+              "<td colspan=7 class='text-center'>출금 대기 내역이 없습니다. </td></tr>";
+          }
+
+          if (cb.page > cb.pageSize) {
+            pageHtml +=
+              '<span onclick="jobGroupSelectTrigger(' +
+              1 +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="first page" class="text-kakaoBrown"><<</span>' +
+              '<span onclick="jobGroupSelectTrigger(' +
+              (cb.startPage - 1) +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="previous page" class="text-kakaoBrown">&nbsp;< </span>';
+          } else {
+            pageHtml +=
+              '<span style="color:gray; display:none;"><<</span>' +
+              '<span style="color:gray;';
+
+            if (page > 1) {
+              page = page * 1;
+              var minusPage = page - 1;
+              pageHtml +=
+                'cursor: pointer; " onclick="jobGroupSelectTrigger(' +
+                minusPage +
+                ", '" +
+                selectVal +
+                "', '" +
+                searchVal +
+                "', '-')";
+            }
+            pageHtml += '"> &nbsp;< </span>';
+          }
+
+          for (var i = cb.startPage; i <= cb.endPage; i++) {
+            if (i == cb.page) {
+              pageHtml +=
+                '<span class="btn btn-sm disabled font-weight-bold"' +
+                'role="button" style="font-size:1.1em;">' +
+                i +
+                "</span>";
+            } else {
+              pageHtml +=
+                '<span onclick="jobGroupSelectTrigger(' +
+                i +
+                ", '" +
+                selectVal +
+                "', '" +
+                searchVal +
+                '\', \'-\')" class="btn btn-sm" role="button" style="font-size:1.1em;">' +
+                i +
+                "</span>";
+            }
+          }
+
+          if (cb.endPage < cb.totalPage) {
+            pageHtml +=
+              '<span onclick="jobGroupSelectTrigger(' +
+              (cb.endPage + 1) +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="next page" class="text-kakaoBrown">> </span>' +
+              '<span onclick="jobGroupSelectTrigger(' +
+              cb.totalPage +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="last page" class="text-kakaoBrown">&nbsp;>></span>';
+          } else {
+            pageHtml += '<span style="color:gray; ';
+
+            if (page != cb.endPage) {
+              page = page * 1;
+              var plusPage = page + 1;
+              pageHtml +=
+                'cursor: pointer; " onclick="jobGroupSelectTrigger(' +
+                plusPage +
+                ", '" +
+                selectVal +
+                "', '" +
+                searchVal +
+                "', '-')";
+            }
+
+            pageHtml +=
+              '"> > </span>' +
+              '<span style="color:gray; display:none;"> >> </span>';
+          }
+
+          $("#boardContents").append(html);
+          $("#pageContainer").append(pageHtml);
+        } else {
+        }
+      }
+    );
+  }
+  $(".calculareBtn").click(function (e) {
+    $.post("calculate", function (cb) {
+      if (cb.result === "success") {
+        customBootBox("danger", "알림", "정산 완료", "/calculateList");
+      } else {
+        customBootBox("danger", "알림", "정산 실패", "");
+      }
+    });
+  });
+</script>

@@ -1,0 +1,476 @@
+<script src="./js/xlsx.core.min.js"></script>
+<script src="./js/FileSaver.js"></script>
+<script src="./node_modules/tableexport/dist/js/tableexport.js"></script>
+<link
+  rel="stylesheet"
+  href="/node_modules/tableexport/dist/css/tableexport.css"
+/>
+<div class="container-fluid user-list">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">정산 내역</h1>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">
+        정산 목록<button
+          type="button"
+          class="btn btn-default btn-success float-right xlsxBtn"
+        >
+          전체 엑셀 다운로드
+        </button>
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th nowrap>회원 아이디</th>
+              <th nowrap>이름</th>
+              <th nowrap>사용 전 수당</th>
+              <th nowrap>출금 신청액</th>
+              <th nowrap>수수료</th>
+              <th nowrap>실 출금 금액</th>
+              <th nowrap>출금 후 수당</th>
+              <th nowrap>처리일</th>
+            </tr>
+          </thead>
+          <tbody id="boardContents"></tbody>
+        </table>
+        <table
+          class="table table-bordered"
+          id="xlsxData"
+          style="display: none;"
+          width="0"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th nowrap>회원 아이디</th>
+              <th nowrap>이름</th>
+              <th nowrap>주민번호</th>
+              <th nowrap>지급액</th>
+              <th nowrap>소득세</th>
+              <th nowrap>지방소득세</th>
+              <th nowrap>수수료</th>
+              <th nowrap>총 수수료</th>
+              <th nowrap>차인지급액</th>
+              <th nowrap>은행 코드</th>
+              <th nowrap>은행 이름</th>
+              <th nowrap>계좌번호</th>
+              <th nowrap>예금주</th>
+              <th nowrap>지급일</th>
+            </tr>
+          </thead>
+          <tbody id="xlsxContents"></tbody>
+        </table>
+        <div class="text-center my-4 my-md-3" id="pageContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4 mt-5">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">검색 영역</h6>
+    </div>
+    <div class="card-body">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label for="receptionDate" class="btn btn-outline-secondary"
+            >날짜 선택</label
+          >
+        </div>
+        <input
+          type="text"
+          id="receptionDate"
+          name="dates"
+          class="form-control"
+          placeholder=""
+          aria-label=""
+          aria-describedby="basic-addon1"
+        />
+      </div>
+
+      <div class="table-responsive">
+        <table
+          class="table table-bordered"
+          name="benefitList"
+          id="dataTable"
+          width="100%"
+          cellspacing="0"
+        >
+          <tbody>
+            <tr>
+              <th nowrap class="text-center" style="vertical-align: middle;">
+                검색 조건
+              </th>
+              <td nowrap>
+                <select class="form-control" id="keywordSelect">
+                  <option value="-" selected>전체</option>
+                  <option value="1">아이디</option>
+                  <option value="2">이름</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" nowrap>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="searchVal"
+                    class="form-control"
+                    placeholder="아이디 or 이름"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      type="button"
+                      id="SearchBtn"
+                      class="btn btn-primary"
+                    >
+                      search
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var page = "<%= page %>";
+  var html = "";
+  var pageHtml = "";
+  var selectVal = "";
+  var searchVal = ""; // 검색란 값
+  var searchSelectVal = ""; // 검색조건 값
+  var receptionDate;
+  moment.updateLocale("ko", {
+    weekdaysMin: ["일", "월", "화", "수", "목", "금", "토"],
+    monthsShort: [
+      "1월",
+      "2월",
+      "3월",
+      "4월",
+      "5월",
+      "6월",
+      "7월",
+      "8월",
+      "9월",
+      "10월",
+      "11월",
+      "12월"
+    ]
+  });
+
+  var start = moment().subtract(90, "days");
+  var end = moment();
+
+  getUserList(page, searchSelectVal, searchVal);
+
+  $(function() {
+    $(".left-menu")
+      .siblings()
+      .removeClass("active");
+    $(".left-menu")
+      .eq(5)
+      .addClass("active");
+    $('input[name="dates"]').daterangepicker(
+      {
+        autoUpdateInput: false,
+        locale: {
+          format: "YYYY-MM-DD",
+          applyLabel: "적용",
+          cancelLabel: "취소",
+          daysOfWeek: moment.weekdaysMin(),
+          monthNames: moment.monthsShort()
+        },
+        startDate: start,
+        endDate: end
+      },
+      receptionDateFunc
+    );
+
+    function receptionDateFunc(start, end) {
+      var startDate = $("#receptionDate")
+        .data("daterangepicker")
+        .startDate.format("YYYY-MM-DD");
+      var endDate = $("#receptionDate")
+        .data("daterangepicker")
+        .endDate.format("YYYY-MM-DD");
+      $("#receptionDate").val(startDate + " ~ " + endDate);
+      getUserList(page, searchSelectVal, searchVal);
+    }
+  });
+
+  $("#SearchBtn").click(function() {
+    searchSelectVal = $("#keywordSelect option:selected").val();
+    searchVal = $.trim($("#searchVal").val());
+    getUserList(page, searchSelectVal, searchVal);
+  });
+
+  function memberInfo(member_no) {
+    location.href = "/userInfo?member_no = " + member_no;
+  }
+
+  function getUserList(page, searchSelectVal, searchVal) {
+    if (page == 0) {
+      page = $("#pageNo").val();
+    }
+    var receptionDate = $("#receptionDate").val();
+
+    $.get(
+      "calculateList",
+      {
+        page: page,
+        searchSelectVal: searchSelectVal,
+        searchVal: searchVal,
+        receptionDate: receptionDate
+      },
+      function(cb) {
+        if (cb.result) {
+          var html = "";
+          var pageHtml = "";
+          $("#boardContents").html("");
+          $("#pageContainer").html("");
+          if (cb.contents.length > 0) {
+            cb.contents.forEach(function(item, idx) {
+              html += "<tr>";
+              html +=
+                '<td nowrap><a href="/userInfo?member_no=' +
+                item.member_no +
+                '">' +
+                phoneNum(item.member_id) +
+                "</td>" +
+                "<td nowrap>" +
+                item.member_name +
+                "[" +
+                item.member_no +
+                "]</td>" +
+                "<td nowrap>" +
+                (item.before_benefit == null
+                  ? "0"
+                  : comma(item.before_benefit)) +
+                "</th>" +
+                "<td nowrap>" +
+                (item.tax + item.truth_benefit == null ||
+                item.tax + item.truth_benefit == 0
+                  ? "0"
+                  : comma(item.tax + item.truth_benefit)) +
+                "</td>" +
+                "<td nowrap>" +
+                (item.tax == null ? "0" : comma(item.tax)) +
+                "</td>" +
+                "<td nowrap>" +
+                (item.truth_benefit == null ? "0" : comma(item.truth_benefit)) +
+                "</td>" +
+                "<td nowrap>" +
+                (item.after_benefit == null ? "0" : comma(item.after_benefit)) +
+                "</td>" +
+                "<td nowrap>" +
+                item.reg_date +
+                "</td>" +
+                "</tr>";
+            });
+          } else {
+            html += "<tr>";
+            html +=
+              "<td colspan=8 class='text-center'>정산 내역이 없습니다. </td></tr>";
+          }
+
+          if (cb.page > cb.pageSize) {
+            pageHtml +=
+              '<span onclick="jobGroupSelectTrigger(' +
+              1 +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="first page" class="text-kakaoBrown"><<</span>' +
+              '<span onclick="jobGroupSelectTrigger(' +
+              (cb.startPage - 1) +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="previous page" class="text-kakaoBrown">&nbsp;< </span>';
+          } else {
+            pageHtml +=
+              '<span style="color:gray; display:none;"><<</span>' +
+              '<span style="color:gray;';
+
+            if (page > 1) {
+              page = page * 1;
+              var minusPage = page - 1;
+              pageHtml +=
+                'cursor: pointer; " onclick="jobGroupSelectTrigger(' +
+                minusPage +
+                ", '" +
+                selectVal +
+                "', '" +
+                searchVal +
+                "', '-')";
+            }
+            pageHtml += '"> &nbsp;< </span>';
+          }
+
+          for (var i = cb.startPage; i <= cb.endPage; i++) {
+            if (i == cb.page) {
+              pageHtml +=
+                '<span class="btn btn-sm disabled font-weight-bold"' +
+                'role="button" style="font-size:1.1em;">' +
+                i +
+                "</span>";
+            } else {
+              pageHtml +=
+                '<span onclick="jobGroupSelectTrigger(' +
+                i +
+                ", '" +
+                selectVal +
+                "', '" +
+                searchVal +
+                '\', \'-\')" class="btn btn-sm" role="button" style="font-size:1.1em;">' +
+                i +
+                "</span>";
+            }
+          }
+
+          if (cb.endPage < cb.totalPage) {
+            pageHtml +=
+              '<span onclick="jobGroupSelectTrigger(' +
+              (cb.endPage + 1) +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="next page" class="text-kakaoBrown">> </span>' +
+              '<span onclick="jobGroupSelectTrigger(' +
+              cb.totalPage +
+              ", '" +
+              selectVal +
+              "', '" +
+              searchVal +
+              '\', \'-\')" title="last page" class="text-kakaoBrown">&nbsp;>></span>';
+          } else {
+            pageHtml += '<span style="color:gray; ';
+
+            if (page != cb.endPage) {
+              page = page * 1;
+              var plusPage = page + 1;
+              pageHtml +=
+                'cursor: pointer; " onclick="jobGroupSelectTrigger(' +
+                plusPage +
+                ", '" +
+                selectVal +
+                "', '" +
+                searchVal +
+                "', '-')";
+            }
+
+            pageHtml +=
+              '"> > </span>' +
+              '<span style="color:gray; display:none;"> >> </span>';
+          }
+
+          pageHtml +=
+            '<input type="hidden" name="pageNo" id="pageNo" value="' +
+            cb.page +
+            '"/>';
+          $("#boardContents").append(html);
+          $("#pageContainer").append(pageHtml);
+        }
+      }
+    );
+  }
+  $(".xlsxBtn").click(function(e) {
+    //엑셀 다운로드 파일생성 라우터로 이동
+    $.get("calculateListXlsx", function(cb) {
+      if (cb.result) {
+        var html = "";
+        var pageHtml = "";
+        $("#xlsxContents").html("");
+        if (cb.contents.length > 0) {
+          cb.contents.forEach(function(item, idx) {
+            html += "<tr>";
+            html +=
+              "<td nowrap>" +
+              phoneNum(item.member_id) +
+              "</td>" +
+              "<td nowrap>" +
+              item.member_name +
+              "</td>" +
+              "<td nowrap>" +
+              serialNum(item.member_personal_number) +
+              " </td>" +
+              "<td nowrap>" +
+              comma(item.before_benefit) +
+              " </td>" +
+              "<td nowrap>" +
+              comma(item.tax1) +
+              " </td>" +
+              "<td nowrap>" +
+              comma(item.tax2) +
+              " </td>" +
+              "<td nowrap>" +
+              comma(item.tax3) +
+              " </td>" +
+              "<td nowrap>" +
+              comma(item.total_tax) +
+              " </td>" +
+              "<td nowrap>" +
+              comma(item.truth_benefit) +
+              " </td>" +
+              "<td nowrap>" +
+              (item.bank_code + " ") +
+              "</td>" +
+              "<td nowrap>" +
+              item.bank_name +
+              "</td>" +
+              "<td nowrap>" +
+              (item.account_number + " ") +
+              "</td>" +
+              "<td nowrap>" +
+              item.account_holder +
+              "</td>" +
+              "<td nowrap>" +
+              item.reg_date +
+              "</td>" +
+              "</tr>";
+          });
+        }
+        $("#xlsxContents").append(html);
+        TableExport.prototype.bootstrapConfig = ["btn", "btn-default"];
+        instance = new TableExport($("#xlsxData"), {
+          headers: true,
+          footers: true,
+          formats: ["xlsx"],
+          filename: moment().format("YYYY-MM-DD") + " 정산 내역",
+          bootstrap: true,
+          exportButtons: false,
+          position: "top",
+          ignoreRows: null,
+          ignoreCols: null,
+          trimWhitespace: false
+        });
+        exportData = instance.getExportData();
+        instance.export2file(
+          exportData.xlsxData.xlsx.data,
+          exportData.xlsxData.xlsx.mimeType,
+          exportData.xlsxData.xlsx.filename,
+          exportData.xlsxData.xlsx.fileExtension
+        );
+      } else {
+        customBootBox("danger", "알림", "엑셀 다운로드 실패", "");
+      }
+    });
+  });
+</script>

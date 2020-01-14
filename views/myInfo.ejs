@@ -1,0 +1,494 @@
+<div class="container-fluid user-list">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">내 이용 내역</h1>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">내 정보
+        <button type="button" class="btn btn-primary d-md-block d-none float-right " data-toggle="modal" data-target="#withdraw">
+          출금 신청
+        </button>
+      </h6>
+      <button type="button" class="mt-2 btn btn-primary btn-lg btn-block py-0 d-md-none d-sm-block" data-toggle="modal"
+        data-target="#withdraw">
+        <small>
+          출금 신청</small>
+      </button>
+      <div class="modal fade" id="withdraw" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">출금 액수 선택</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h6 class="modal-title mb-2" id="current_benefit_box"></h6>
+              <h6 class="modal-title mb-0" id="exampleModalLongTitle">※보유수당 초과 금액 입력 불가</h6>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">출금액</span>
+                </div>
+                <input type="number" id="withdrawPrice" class="form-control" aria-label="Amount (to the nearest dollar)">
+                <div class="input-group-append">
+                  <span class="input-group-text">원</span>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary withdrawSubmit">확인</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th nowrap>아이디</th>
+              <th nowrap>이름</th>
+              <th nowrap>총 매출액</th>
+              <th nowrap>총 지급 PET</th>
+              <th nowrap>총 더블 PET</th>
+              <th nowrap>관리자 PET</th>
+              <th nowrap>현재 보유 PET</th>
+              <th nowrap>총 적립 수당</th>
+              <th nowrap>총 정산 수당</th>
+              <th nowrap>현재 보유 수당</th>
+            </tr>
+          </thead>
+          <tbody id="boardContents">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">
+        내 출금 신청 내역
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th nowrap>이름</th>
+              <th nowrap>출금 신청액</th>
+              <th nowrap>상태</th>
+              <th nowrap>완료 여부</th>
+              <th nowrap>신청일</th>
+            </tr>
+          </thead>
+          <tbody id="boardContents2"></tbody>
+        </table>
+        <div class="text-center my-4 my-md-3" id="pageContainer"></div>
+      </div>
+    </div>
+  </div>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">추천인 정보</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">추천인 아이디</span>
+          </div>
+          <input id="recommender_id" disabled type="text" class="form-control" placeholder="없음">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">추천인 이름</span>
+          </div>
+          <input id="recommender_name" disabled type="text" class="form-control" placeholder="없음">
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">은행 정보 입력</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="input-group mb-3">
+          <div class="input-group">
+            <select disabled id="bank_name" class="custom-select">
+              <option value="">은행 이름</option>
+              <option value="001">한국</option>
+              <option value="002">산업</option>
+              <option value="003">기업</option>
+              <option value="004">국민</option>
+              <option value="005">KEB하나</option>
+              <option value="007">수협</option>
+              <option value="008">수출입</option>
+              <option value="011">농협</option>
+              <option value="012">지역농ㆍ축협</option>
+              <option value="020">우리</option>
+              <option value="023">SC제일</option>
+              <option value="027">한국씨티</option>
+              <option value="031">대구</option>
+              <option value="032">부산</option>
+              <option value="034">광주</option>
+              <option value="035">제주</option>
+              <option value="037">전북</option>
+              <option value="039">경남</option>
+              <option value="045">새마을금고</option>
+              <option value="048">신협</option>
+              <option value="050">상호저축은행</option>
+              <option value="052">모간스탠리</option>
+              <option value="054">ＨＳＢＣ</option>
+              <option value="055">도이치은행</option>
+              <option value="057">JP모간체이스</option>
+              <option value="058">미즈호</option>
+              <option value="059">엠유에프지은행</option>
+              <option value="060">Ｂ．Ｏ．Ａ</option>
+              <option value="061">비엔피파리바</option>
+              <option value="062">중국공상</option>
+              <option value="063">중국</option>
+              <option value="064">산림조합</option>
+              <option value="065">대화</option>
+              <option value="066">교통</option>
+              <option value="067">중국건설은행</option>
+              <option value="071">우체국</option>
+              <option value="076">신용보증기금</option>
+              <option value="077">기술보증기금</option>
+              <option value="081">KEB하나</option>
+              <option value="088">신한</option>
+              <option value="089">케이뱅크</option>
+              <option value="090">카카오뱅크</option>
+              <option value="093">한국주택금융공사</option>
+              <option value="094">서울보증보험</option>
+              <option value="096">한국전자금융(주)</option>
+              <option value="099">금융결제원</option>
+              <option value="101">한국신용정보원</option>
+              <option value="102">대신저축은행</option>
+              <option value="103">에스비아이저축은행</option>
+              <option value="104">에이치케이저축은행</option>
+              <option value="105">웰컴저축은행</option>
+              <option value="106">신한저축은행</option>
+              <option value="209">유안타증권</option>
+              <option value="218">KB증권</option>
+              <option value="221">골든브릿지투자증권</option>
+              <option value="222">한양증권</option>
+              <option value="223">리딩투자증권</option>
+              <option value="224">BNK투자증권</option>
+              <option value="225">IBK투자증권</option>
+              <option value="227">KTB투자증권</option>
+              <option value="238">미래에셋대우</option>
+              <option value="240">삼성증권</option>
+              <option value="243">한국투자증권</option>
+              <option value="247">NH투자증권</option>
+              <option value="261">교보증권</option>
+              <option value="262">하이투자증권</option>
+              <option value="263">현대차증권</option>
+              <option value="264">키움증권</option>
+              <option value="265">이베스트투자증권</option>
+              <option value="266">SK증권</option>
+              <option value="267">대신증권</option>
+              <option value="269">한화투자증권</option>
+              <option value="270">하나금융투자</option>
+              <option value="278">신한금융투자</option>
+              <option value="279">DB금융투자</option>
+              <option value="280">유진투자증권</option>
+              <option value="287">메리츠종합금융증권</option>
+              <option value="290">부국증권</option>
+              <option value="291">신영증권</option>
+              <option value="292">케이프투자증권</option>
+              <option value="293">한국증권금융</option>
+              <option value="294">펀드온라인코리아</option>
+              <option value="295">우리종합금융</option>
+              <option value="299">아주캐피탈</option>
+              <option value="431">미래에셋생명</option>
+              <option value="432">한화생명</option>
+              <option value="433">교보라이프플래닛생명</option>
+              <option value="434">푸본현대생명</option>
+              <option value="435">라이나생명</option>
+              <option value="436">교보생명</option>
+              <option value="437">에이비엘생명</option>
+              <option value="438">신한생명</option>
+              <option value="439">KB생명보험</option>
+              <option value="440">농협생명</option>
+              <option value="441">삼성화재</option>
+              <option value="442">현대해상</option>
+              <option value="443">DB손해보험</option>
+              <option value="444">KB손해보험</option>
+              <option value="445">롯데손해보험</option>
+              <option value="446">오렌지라이프생명보험</option>
+              <option value="447">악사손해보험</option>
+              <option value="448">메리츠화재</option>
+              <option value="449">농협손해보험</option>
+              <option value="450">푸르덴셜생명보험</option>
+              <option value="452">삼성생명</option>
+              <option value="453">흥국생명</option>
+              <option value="454">한화손해보험</option>
+              <option value="455">AIA생명보험</option>
+              <option value="456">DGB생명보험</option>
+              <option value="457">DB생명보험</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">은행</label>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">계좌번호</span>
+          </div>
+          <input id="account_number" disabled type="text" class="form-control" placeholder="계좌번호 입력[필수]">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">예금주</span>
+          </div>
+          <input id="account_holder" disabled type="text" class="form-control" placeholder="예금주 입력[필수]">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+
+
+<script>
+  var member_no = '<%= memberInfo.member_no %>';
+  var member_id = '<%= memberInfo.member_id %>';
+  var member_name = '<%= memberInfo.member_name %>';
+  var deposit = '<%= memberInfo.deposit %>';
+  var airdrop = '<%= memberInfo.airdrop %>';
+  var doubleAirdrop = '<%= memberInfo.doubleAirdrop %>';
+  var adminBonus = '<%= memberInfo.adminBonus %>';
+  var current_PET = '<%= memberInfo.current_PET %>';
+  var saving_benefit = '<%= memberInfo.saving_benefit %>';
+  var calculate_benefit = '<%= memberInfo.calculate_benefit %>';
+  var current_benefit = '<%= memberInfo.current_benefit %>';
+  var recommender_id = '<%= memberInfo.recommender_id %>';
+  var recommender_name = '<%=recommenderName%>';
+  var recommenderNo = '<%= recommenderNo%>';
+  var recommenderExist = '<%= recommenderExist %>';
+  var account_number = '<%= memberInfo.account_number %>';
+  var account_holder = '<%= memberInfo.account_holder %>';
+  var bank_name = '<%= memberInfo.bank_name %>';
+  var bank_code = '<%= memberInfo.bank_code %>';
+  var page = "<%= page %>";
+  var html = "";
+  var pageHtml = "";
+  var selectVal = ""; // 직군분류 선택 값
+  var searchVal = ""; // 검색란 값
+  var searchSelectVal = ""; // 검색조건 값
+  $(function () {
+    $(".left-menu")
+      .siblings()
+      .removeClass("active");
+    $(".left-menu")
+      .eq(3)
+      .addClass("active");
+    $('#current_benefit_box').text('현재 보유수당 : '+parseInt(current_benefit)+"point");
+    getUserList(selectVal, page, searchSelectVal, searchVal);
+    var html = '';
+    html += '<tr>';
+    html +=
+      '<td nowrap>' + member_id + '</td>' +
+      '<td nowrap>' + member_name + '[' + member_no + ']</td>' +
+      '<td nowrap>' + comma(deposit) + '</th>' +
+      '<td nowrap>' + comma(airdrop) + '</td>' +
+      '<td nowrap>' + comma(doubleAirdrop) + '</td>' +
+      '<td nowrap>' + (adminBonus < 0 ? "-" + comma(adminBonus) : comma(adminBonus)) + '</td>' +
+      '<td nowrap>' + comma(current_PET) + '</th>' +
+      '<td nowrap>' + comma(parseInt(saving_benefit)) + '</td>' +
+      '<td nowrap>' + comma(parseInt(calculate_benefit)) + '</td>' +
+      '<td nowrap>' + comma(parseInt(current_benefit)) + '</td>' +
+      '</tr>';
+    $('#boardContents').append(html);
+    //추천인 정보, 은행 정보
+    $('#bank_name').val(bank_code).prop("selected", true);
+    $('#account_number').val(account_number);
+    $('#account_holder').val(account_holder);
+    $('#recommender_name').val(recommender_name);
+    $('#recommender_id').val(recommender_id);
+  });
+  $('.withdrawSubmit').click(function () {
+    var withdraw = $('#withdrawPrice').val();
+    withdraw = parseInt(withdraw);
+    current_benefit = parseInt(current_benefit);
+    if (current_benefit < withdraw) {
+      customBootBox(
+        "danger",
+        "출금액 입력확인",
+        "현재 보유 수당보다 큰 출금액 신청 불가",
+        ""
+      );
+      return false;
+    }
+    if(isNaN(withdraw) || isNaN(current_benefit)){
+      customBootBox('danger', '알림', "출금 신청액을 확인하세요", '');
+      return false;
+    }
+    $.post('/withdrawStandBy', {
+      member_no: member_no,
+      withdraw: withdraw,
+    }, function (cb) {
+      if (cb.result === 'success') {
+        customBootBox('danger', '알림', "출금 신청 완료", '/myInfo');
+      } else {
+        customBootBox('danger', '알림', "출금 신청 실패", '');
+      }
+    });
+  });
+  function getUserList(page, searchSelectVal, searchVal) {
+    $("#boardContents2").html("");
+    $("#pageContainer").html("");
+    $.get(
+      "myWithdrawList",
+      {
+        page: page,
+        searchSelectVal: searchSelectVal,
+        searchVal: searchVal
+      },
+      function (cb) {
+        if (cb.result) {
+          var html = "";
+          var pageHtml = "";
+          if (cb.contents.length > 0) {
+            cb.contents.forEach(function (item, idx) {
+              switch (item.member_grade) {
+                case 1:
+                  item.member_grade = "본사";
+                  break;
+                case 2:
+                  item.member_grade = "정회원";
+                  break;
+                case 3:
+                  item.member_grade = "준회원";
+                  break;
+              }
+              html += "<tr>";
+              html +=
+                "<td nowrap>" +
+                item.member_name +
+                "[" +
+                item.member_no +
+                "]</td>" +
+                "<td nowrap>" +
+                comma(item.withdraw) +
+                "</td>" +
+                "<td nowrap>" +
+                (item.withdraw_complete == 0
+                  ? "대기"
+                  : item.withdraw_complete == 1
+                    ? "승인"
+                    : "거절") +
+                "</td>" +
+                "<td nowrap>" +
+                (item.withdraw_over == 0 ? "미출금" : "출금 완료") +
+                "</td>" +
+                "<td nowrap>" +
+                item.reg_date +
+                "</td>" +
+                "</tr>";
+            });
+          } else {
+            html += "<tr><td colspan=5 class='text-center'>출금 내역이 없습니다</td></tr>"
+          }
+
+          if (cb.page > cb.pageSize) {
+            pageHtml +=
+              '<a style="text-decoration:none" href="/myWithdrawList?page=1" title="first page" class="text-lawdiansDark"><<</a>' +
+              '<a style="text-decoration:none" href="/myWithdrawList?page=' +
+              (cb.startPage -
+                1) +
+              '" title="previous page"' +
+              'class="text-lawdiansDark">&nbsp;< </a>';
+          } else {
+            pageHtml +=
+              '<span style="color:gray; display:none;"><<</span>' +
+              '<span style="color:gray;';
+
+            if (page > 1) {
+              page = page * 1;
+              var minusPage = page - 1;
+              pageHtml +=
+                'cursor: pointer; " onclick="getUserList(' +
+                minusPage +
+                ", '" +
+                searchVal +
+                "', '')";
+            }
+            pageHtml += '"> &nbsp;< </span>';
+          }
+
+          for (var i = cb.startPage; i <= cb.endPage; i++) {
+            if (i == cb.page) {
+              pageHtml +=
+                '<span class="btn btn-sm disabled font-weight-bold"' +
+                'role="button" style="font-size:1.1em;">' +
+                i +
+                "</span>";
+            } else {
+              pageHtml +=
+                '<span onclick="getUserList(' +
+                i +
+                ", '" +
+                searchVal +
+                '\', \'\')" class="btn btn-sm" role="button" style="font-size:1.1em;">' +
+                i +
+                "</span>";
+            }
+          }
+
+          if (cb.endPage < cb.totalPage) {
+            pageHtml +=
+              '<span onclick="getUserList(' +
+              (cb.endPage +
+                1) +
+              ", '" +
+              searchVal +
+              '\', \'\')" title="next page" class="text-kakaoBrown">> </span>' +
+              '<span onclick="getUserList(' +
+              cb.totalPage +
+              "', '" +
+              searchVal +
+              '\', \'\')" title="last page" class="text-kakaoBrown">&nbsp;>></span>';
+          } else {
+            pageHtml += '<span style="color:gray; ';
+
+            if (page != cb.endPage) {
+              page = page * 1;
+              var plusPage = page + 1;
+              pageHtml +=
+                'cursor: pointer; " onclick="getUserList(' +
+                plusPage +
+                ", '" +
+                searchVal +
+                "', '')";
+            }
+            pageHtml +=
+              '"> > </span>' +
+              '<span style="color:gray; display:none;"> >> </span>';
+          }
+
+          $("#boardContents2").append(html);
+          $("#pageContainer").append(pageHtml);
+        } else {
+        }
+      }
+    );
+  }
+</script>

@@ -1,0 +1,512 @@
+<!-- Content Row -->
+<div class="row">
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+            >
+              오늘의 펫
+            </div>
+            <div
+              class="h5 mb-0 font-weight-bold text-gray-800"
+              id="todayPETprice"
+            ></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Earnings (Monthly) Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+            >
+              총 회원 수
+            </div>
+            <div
+              class="h5 mb-0 font-weight-bold text-gray-800"
+              id="cntMember"
+            ></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-users fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Earnings (Monthly) Card Example -->
+  <!-- <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-success text-uppercase mb-1"
+            >
+              현 매출액
+              <span class="float-right pr-3" id="lastDepositDate"></span>
+            </div>
+            <div
+              class="h5 mb-0 font-weight-bold text-gray-800 cntDeposit"
+            ></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Earnings (Monthly) Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+              금일 가입 회원 수
+            </div>
+            <div class="row no-gutters align-items-center">
+              <div class="col-auto">
+                <div
+                  class="h5 mb-0 mr-3 font-weight-bold text-gray-800 cntTodayMember"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-user-plus fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Requests Card Example -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-warning text-uppercase mb-1"
+            >
+              금일 매출액
+            </div>
+            <div
+              class="h5 mb-0 font-weight-bold text-gray-800 cntTodayDeposit"
+            ></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-hand-holding-usd fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Content Row -->
+
+<div class="row">
+  <!-- Content Column -->
+  <div class="col-lg-9 mb-4">
+    <!-- Project Card Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">최근 가입 회원</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" style="overflow-x:auto;">
+          <table class="table table-bordered" id="dataTable" cellspacing="0">
+            <thead>
+              <tr>
+                <th nowrap>아이디</th>
+                <th nowrap>이름</th>
+                <th nowrap>추천인ID</th>
+                <th nowrap>추천인 이름</th>
+                <th nowrap>등록일</th>
+              </tr>
+            </thead>
+            <tbody id="userListTable"></tbody>
+          </table>
+        </div>
+        <% if(member_grade == 1) { %>
+        <button
+          type="button"
+          class="mt-3 btn btn-primary btn-lg btn-block py-0"
+          id="userListBtn"
+        >
+          <small>전체목록</small>
+        </button>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Project Card Example -->
+    <div class="card shadow mb-4 deposit_box">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">최근 매출 내역</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            class="table table-bordered"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th nowrap>아이디</th>
+                <th nowrap>이름</th>
+                <th nowrap>고객금액</th>
+                <th nowrap>추가/차감</th>
+                <th nowrap>등록일</th>
+              </tr>
+            </thead>
+            <tbody id="depositListTable"></tbody>
+          </table>
+        </div>
+        <% if(member_grade == 1) { %>
+        <button
+          type="button"
+          class="mt-3 btn btn-primary btn-lg btn-block py-0"
+          id="depositListBtn"
+        >
+          <small>전체목록</small>
+        </button>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Project Card Example -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">최근 PET 내역</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            class="table table-bordered"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th nowrap>회원 아이디</th>
+                <th nowrap>이름</th>
+                <th nowrap>추천인</th>
+                <th nowrap>처리전 PET</th>
+                <th nowrap>PET</th>
+                <th nowrap>처리후 PET</th>
+                <th nowrap>추가/차감</th>
+                <th nowrap>구분</th>
+                <th nowrap>처리일</th>
+              </tr>
+            </thead>
+            <tbody id="petListTable"></tbody>
+          </table>
+        </div>
+        <% if(member_grade == 1) { %>
+        <button
+          type="button"
+          class="mt-3 btn btn-primary btn-lg btn-block py-0"
+          id="PETListBtn"
+        >
+          <small>전체목록</small>
+        </button>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 mb-4">
+    <!-- Color System -->
+    <div class="row">
+      <div class="col-lg-12 mb-2">
+        <div class="card bg-secondary text-white shadow">
+          <div class="card-body">
+            금일 지급 PET
+            <div class="font-weight-bold small todayProvidePET"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 mb-2">
+        <div class="card bg-primary text-white shadow">
+          <div class="card-body">
+            금일 더블 PET
+            <div class="font-weight-bold small todayAirDropPET"></div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-12 mb-2">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            금일 본사 판매 가능 PET
+                            <div class="font-weight-bold small todaySalesPET"></div>
+                        </div>
+                    </div>
+                </div> -->
+      <div class="col-lg-12 mb-2">
+        <div class="card bg-info text-white shadow">
+          <div class="card-body">
+            총 지급 PET
+            <div class="font-weight-bold small allProvidePET"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 mb-2">
+        <div
+          class="card bg-warning text-white shadow"
+          style="background-color: #f39c12 !important;"
+        >
+          <div class="card-body">
+            총 더블 PET
+            <div class="font-weight-bold small allAirDropPET"></div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-12 mb-2">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body">
+                            총 본사 판매 가능 PET
+                            <div class="font-weight-bold small allSalesPET"></div>
+                        </div>
+                    </div>
+                </div> -->
+    </div>
+  </div>
+  <!-- <div class="col-lg-6 mb-4">
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                </div>
+                <div class="card-body">
+                  <div class="text-center">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                      src="img/undraw_posting_photo.svg" alt="">
+                  </div>
+                  <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow"
+                      href="https://undraw.co/">unDraw</a>, a constantly updated collection of beautiful svg images that
+                    you can use completely free and without attribution!</p>
+                  <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on unDraw &rarr;</a>
+                </div>
+              </div>
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                </div>
+                <div class="card-body">
+                  <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor
+                    page performance. Custom CSS classes are used to create custom components and custom utility
+                    classes.</p>
+                  <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap
+                    framework, especially the utility classes.</p>
+                </div>
+              </div>
+
+            </div> -->
+</div>
+<script>
+  var member_grade = "<%= member_grade %>";
+
+  $(function() {
+    $.get("/getIndexUserList", function(cb) {
+      var contents = cb.contents;
+      var cnt = cb.cnt;
+      var todayCnt = cb.todayCnt;
+      var todayPETprice = cb.todayPETprice;
+      $("#cntMember").text(cnt + " 명");
+      $(".cntTodayMember").text(todayCnt + " 명");
+      var html = "";
+      if (cb.contents.length > 0) {
+        cb.contents.forEach(function(item, idx) {
+          html +=
+            "<tr>" +
+            "<td nowrap>" +
+            (member_grade == 1 ? item.member_id : hidePhone(item.member_id)) +
+            "</td>" +
+            "<td nowrap>" +
+            item.member_name +
+            "[" +
+            item.member_no +
+            "]</td>" +
+            "<td nowrap>" +
+            (item.recommender_id == null
+              ? "없음"
+              : member_grade == 1
+              ? item.recommender_id
+              : hidePhone(item.recommender_id)) +
+            "</td>" +
+            "<td nowrap>" +
+            (item.recommender_name == null
+              ? "없음"
+              : member_grade == 1
+              ? item.recommender_name
+              : item.recommender_name) +
+            "</td>" +
+            "<td nowrap>" +
+            item.reg_date +
+            "</td>" +
+            "</tr>";
+        });
+      } else {
+        html = "<tr><td nowrap colspan ='5'>최근 가입회원이 없습니다</td></tr>";
+      }
+      $("#todayPETprice").text(todayPETprice + " 원");
+      $("#userListTable").html(html);
+    });
+
+    $.get("/getIndexDepositList", function(cb) {
+      var contents = cb.contents;
+      var totalDepositToday = cb.totalDepositToday;
+      var totalDeposit = cb.totalDeposit;
+      var lastDepositDate = cb.lastDepositDate;
+      if (totalDepositToday == null) {
+        totalDepositToday = 0;
+      }
+      if (totalDeposit == null) {
+        totalDeposit = 0;
+      }
+      $("#lastDepositDate").text(lastDepositDate);
+      $(".cntDeposit").text(comma(totalDeposit) + " 원");
+      $(".cntTodayDeposit").text(comma(totalDepositToday) + " 원");
+      var html = "";
+      if (cb.contents.length > 0) {
+        cb.contents.forEach(function(item, idx) {
+          html +=
+            "<tr>" +
+            "<td nowrap>" +
+            (member_grade == 1 ? item.member_id : hidePhone(item.member_id)) +
+            "</td>" +
+            "<td nowrap>" +
+            item.member_name +
+            "[" +
+            item.member_no +
+            "]</td>" +
+            "<td nowrap>" +
+            comma(item.deposit) +
+            " 원</td>" +
+            "<td nowrap>" +
+            (item.type == 0 ? "추가" : "차감") +
+            "</td>" +
+            "<td nowrap>" +
+            item.reg_date +
+            "</td>" +
+            "</tr>";
+        });
+      } else {
+        html = "<tr><td nowrap colspan ='5'>매출 내역이 없습니다</td></tr>";
+      }
+      if (member_grade === "1") {
+        $("#depositListTable").html(html);
+      } else {
+        $(".deposit_box").hide();
+      }
+    });
+
+    $.get("/getIndexPETList", function(cb) {
+      console.log(cb);
+      var contents = cb.contents;
+      var allProvidePET = cb.allProvidePET;
+      var allAirDropPET = cb.allAirDropPET;
+      // var allSalesPET = allProvidePET+allAirDropPET;
+
+      var todayProvidePET = cb.todayProvidePET;
+      var todayAirDropPET = cb.todayAirDropPET;
+      // var todaySalesPET = todayProvidePET+todayAirDropPET;
+      if (allProvidePET == null) {
+        allProvidePET = 0;
+      }
+      if (allAirDropPET == null) {
+        allAirDropPET = 0;
+      }
+      if (todayProvidePET == null) {
+        todayProvidePET = 0;
+      }
+      if (todayAirDropPET == null || todayAirDropPET == 0.001) {
+        todayAirDropPET = 0;
+      }
+      $(".allProvidePET").text(comma(allProvidePET));
+      $(".allAirDropPET").text(comma(allAirDropPET));
+      // $('.allSalesPET').text(comma(allSalesPET));
+      $(".todayProvidePET").text(comma(todayProvidePET));
+      $(".todayAirDropPET").text(comma(todayAirDropPET));
+      // $('.todaySalesPET').text(comma(todaySalesPET));
+      var html = "";
+      if (cb.contents.length > 0) {
+        cb.contents.forEach(function(item, idx) {
+          html += "<tr>";
+          html +=
+            "<td nowrap>" +
+            (member_grade == 1 ? item.member_id : hidePhone(item.member_id)) +
+            "</td>" +
+            "<td nowrap>" +
+            item.member_name +
+            "[" +
+            item.member_no +
+            "]</td>" +
+            "<td nowrap>" +
+            (item.recommender_id == null
+              ? "없음"
+              : member_grade == 1
+              ? item.recommender_id
+              : hidePhone(item.recommender_id)) +
+            "</td>" +
+            "<td nowrap>" +
+            comma(item.before_PET) +
+            "</td>" +
+            "<td nowrap>" +
+            comma(item.PET) +
+            "</td>" +
+            "<td nowrap>" +
+            comma(item.after_PET) +
+            "</td>" +
+            "<td nowrap>" +
+            (item.add_sub == 0 ? "추가" : "차감") +
+            "</td>" +
+            "<td nowrap>" +
+            (item.type == 0
+              ? "본사지급"
+              : item.type == 1
+              ? "더블에어드랍"
+              : "관리자 지급") +
+            "</td>" +
+            "<td nowrap>" +
+            item.reg_date +
+            "</td>" +
+            "</tr>";
+        });
+      } else {
+        html = "<tr><td nowrap colspan ='9'>PET 내역이 없습니다</td></tr>";
+      }
+      $("#petListTable").html(html);
+    });
+  });
+  $("#userListBtn").click(function() {
+    location.href = "/userList";
+  });
+  $("#depositListBtn").click(function() {
+    location.href = "/depositList";
+  });
+  $("#PETListBtn").click(function() {
+    location.href = "/PET_list";
+  });
+</script>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>AllbandPet Admin</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="./css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="./css/sb-admin-2.css" rel="stylesheet">
+  <style>
+    @media (max-width:767px) {
+      .container-fluid {
+        padding-left: 1.5%;
+        padding-right: 1.5%;
+      }
+
+      .sidebar {
+        width: 6rem !important;
+      }
+
+      .sidebar .nav-item .nav-link {
+        text-align: center;
+        padding: 0.75rem 0.75rem;
+        width: 6rem;
+      }
+    }
+  </style>
+</head>
+
+<script src="./node_modules/jquery/dist/jquery.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="./vendor/jquery/jquery.min.js"></script>
+<script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="./js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<!-- <script src="./vendor/chart.js/Chart.min.js"></script>
+ <script src="./js/demo/chart-area-demo.js"></script>
+ <script src="./js/demo/chart-pie-demo.js"></script> -->
+<script src="./js/moment.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+<body id="page-top">
+
+  <div id="wrapper">
+
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/index">
+        <div class="sidebar-brand-icon">
+          <img src="./img/bboompet_logo_w.png" style="width: 90%;">
+        </div>
+
+      </a>
+      <h6 style="text-align: center;"><a href="/index" class="font-weight-bold" style="color:white;">임직원관리 프로그램</a></h6>
+      <hr class="sidebar-divider">
+      <li class="nav-item left-menu active">
+        <a class="nav-link" href="/index">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>현황판</span></a>
+      </li>
+      <hr class="sidebar-divider">
+
+
+      <li class="nav-item left-menu">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+          aria-controls="collapseTwo">
+          <i class="fas fa-users"></i>
+          <span>회원 목록</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <% if(member_grade ==  1) { %>
+            <a class="collapse-item" href="/userList?page=1">전체 회원 정보</a>
+            <a class="collapse-item" href="/userAdd">회원 추가</a>
+            <% }else if(member_grade == 2) { %>
+            <a class="collapse-item" href="/registUserList?page=1">하위 회원 목록</a>
+            <a class="collapse-item" href="/userAdd">회원 추가</a>
+            <% }else if(member_grade == 3) {%>
+            <a class="collapse-item" href="/registUserList?page=1">하위 회원 목록</a>
+            <% } %>
+          </div>
+        </div>
+      </li>
+      <hr class="sidebar-divider">
+      <li class="nav-item left-menu d-none">
+
+      </li>
+      <% if(member_grade !=  1) { %>
+      <li class="nav-item left-menu">
+        <a class="nav-link" href="/myinfo">
+          <i class="fas fa-user-tag"></i>
+          <span>내 이용 내역</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <% } %>
+
+
+      <!-- <div class="sidebar-heading">
+        PET 관리
+      </div> -->
+
+      <% if(member_grade ==  1) { %>
+      <li class="nav-item left-menu">
+        <a class="nav-link" href="/PET_list">
+          <i class="fab fa-bitcoin"></i>
+          <span>PET 내역</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      <% } %>
+
+      <% if(member_grade ==  1) { %>
+      <li class="nav-item left-menu">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
+          aria-controls="collapseThree">
+          <i class="fas fa-comments-dollar"></i>
+          <span>매출 관리</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+
+            <a class="collapse-item" href="/depositList">매출 내역</a>
+            <a class="collapse-item" href="/depositStandByList">매출 대기 내역</a>
+
+          </div>
+        </div>
+      </li>
+      <% }%>
+      <% if(member_grade ==  1) { %>
+      <hr class="sidebar-divider">
+      <% } %>
+
+      <% if(member_grade ==  1) { %>
+      <li class="nav-item left-menu">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+          aria-controls="collapsePages">
+          <i class="fas fa-wallet"></i>
+          <span>수당관리</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="/benefit">수당 내역</a>
+            <a class="collapse-item" href="/getWithdrawList">출금 대기 내역</a>
+            <a class="collapse-item" href="/calculateList">정산 내역</a>
+          </div>
+        </div>
+      </li>
+
+      <hr class="sidebar-divider">
+      <% } %>
+      <!-- <div class="sidebar-heading">
+        관리자 설정
+      </div> -->
+      <% if(member_grade ==  1) { %>
+      <li class="nav-item left-menu">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesAdmin" aria-expanded="true"
+          aria-controls="collapsePagesAdmin">
+          <i class="fas fa-user-cog"></i>
+          <span>사이트 관리</span>
+        </a>
+        <div id="collapsePagesAdmin" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="/setting">사이트 관리</a>
+            <!-- <a class="collapse-item" href="register.html">수당 자동 분배</a> -->
+          </div>
+        </div>
+      </li>
+
+      <hr class="sidebar-divider d-none d-md-block">
+      <% } %>
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <div id="content">
+
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <ul class="navbar-nav ml-auto">
+
+
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <% if(member_grade ==  1) { %>
+                <span class="mr-2 d-lg-inline text-gray-600 small currentUser">관리자</span>
+                <img class="img-profile rounded-circle currentUserImg" src="./img/admin-icon.jpg">
+                <% }else if(member_grade ==2) { %>
+                <span class="mr-2 d-lg-inline text-gray-600 small currentUser">정회원</span>
+                <img class="img-profile rounded-circle currentUserImg" src="./img/admin-icon.jpg">
+                <% }else {%>
+                <span class="mr-2 d-lg-inline text-gray-600 small currentUser">준회원</span>
+                <img class="img-profile rounded-circle currentUserImg" src="./img/admin-icon.jpg">
+                <% } %>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" style="color:#3a3b45;cursor: pointer" data-toggle="modal" data-target="#pwChange">
+                  <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                  비밀번호 변경
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/users/logout">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+
+          </ul>
+
+        </nav>
+        <div class="modal fade" id="pwChange" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">비밀번호 변경</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">새 비밀번호</span>
+                  </div>
+                  <input type="password" id="indexPwChange" class="form-control" aria-label="Amount (to the nearest dollar)">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary indexPwChange">확인</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <h1 class="h3 mb-0 text-gray-800 ml-4">bboompet</h1>
+          <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+        </div>
+        <div class="container-fluid">
+          <% if(subPage == 'main') { %>
+          <%- include('main'); %>
+          <% } %>
+
+          <% if(subPage == 'userList') { %>
+          <%- include('userList'); %>
+          <% } %>
+
+          <% if(subPage == 'registUserList') { %>
+          <%- include('registUserList'); %>
+          <% } %>
+
+          <% if(subPage == 'userAdd') { %>
+          <%- include('userAdd'); %>
+          <% } %>
+
+          <% if(subPage == 'userInfo') { %>
+          <%- include('userInfo'); %>
+          <% } %>
+
+          <% if(subPage == 'coin') { %>
+          <%- include('coin'); %>
+          <% } %>
+
+          <% if(subPage == 'deposit') { %>
+          <%- include('deposit'); %>
+          <% } %>
+
+          <% if(subPage == 'depositStandBy') { %>
+          <%- include('depositStandBy'); %>
+          <% } %>
+
+          <% if(subPage == 'withdrawStandBy') { %>
+          <%- include('withdrawStandBy'); %>
+          <% } %>
+
+          <% if(subPage == 'benefit') { %>
+          <%- include('benefit'); %>
+          <% } %>
+
+          <% if(subPage == 'calculate') { %>
+          <%- include('calculate'); %>
+          <% } %>
+
+          <% if(subPage == 'setting') { %>
+          <%- include('setting'); %>
+          <% } %>
+
+          <% if(subPage == 'myInfo') { %>
+          <%- include('myInfo'); %>
+          <% } %>
+
+        </div>
+
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; 2019 All Band Admin. All rights reserved.</span>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+    <script>
+
+      var member_grade = "<%= member_grade %>";
+
+      //전화번호 - 추가
+      function phoneNum(str) {
+        var firstNum = str.substring(0, 3);
+        var secondNum = str.substring(3, 7);
+        var thirdNum = str.substring(7);
+        return firstNum + '-' + secondNum + '-' + thirdNum;
+      }
+
+      //주민번호 - 추가
+      function serialNum(str) {
+        var firstNum = str.substring(0, 6);
+        var secondNum = str.substring(6);
+        return firstNum + '-' + secondNum;
+      }
+
+      // 3자리마다 콤마
+      function comma(num) {
+        console.log(typeof (num));
+        var len, point, str, result, sign = "";
+        var floatNum = parseFloat(num);
+        console.log(floatNum);
+        num = num + "";
+        if (floatNum < 0 || num.indexOf('-') !== -1) { // -부호가 있는 숫자
+          sign = "-";
+        }
+        num = num.replace('-', "");
+        var integerNum = num.substring(0, num.indexOf('.'));
+        var decimalNum = num.substring(num.indexOf('.'));
+        if (integerNum != "") {
+          point = integerNum.length % 3;
+          len = integerNum.length;
+          str = integerNum.substring(0, point);
+          while (point < len) {
+            if (str != "") str += ",";
+            str += integerNum.substring(point, point + 3);
+            point += 3;
+          }
+          return sign + str + decimalNum;
+        } else {
+          point = num.length % 3;
+          len = num.length;
+          str = num.substring(0, point);
+          while (point < len) {
+            if (str != "") str += ",";
+            str += num.substring(point, point + 3);
+            point += 3;
+          }
+          return sign + str;
+        }
+      }
+    </script>
+    <script>
+      $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
+        $("body").toggleClass("sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+          $('.sidebar .collapse').collapse('hide');
+        };
+      });
+
+    </script>
+    <script src="../js/bootbox.min.js"></script>
+    <script>
+      String.prototype.replaceAt = function (index, character) {
+        return this.substr(0, index) + character + this.substr(index + character.length);
+      }
+
+      function hideName(str) {
+        str = str.replaceAt(1, '*');
+        return str;
+      }
+      function hidePhone(str) {
+        str = str.replace(str.substring(3, 7), '****');
+        return str;
+      }
+
+      function customBootBox(type, title, msg, url) {
+        switch (type) {
+          case 'success':
+            var successBootbox = bootbox.dialog({
+              title: '<div>' + title + '</div>',
+              message: '<div style="word-break:keep-all;">' + msg + '</div>',
+              buttons: {
+                success: {
+                  label: "확인",
+                  className: "btn-lawdians w-50 text-center",
+                  callback: function () {
+                    if (url.length !== 0) {
+                      location.href = url;
+                    }
+                  }
+                }
+              }
+            });
+            // successBootbox.on('shown.bs.modal', function(){
+            //     successBootbox.attr('id', 'bootbox-id');
+            // });
+            successBootbox.init(function () {
+              successBootbox.attr('id', 'bootbox-id');
+              $('#bootbox-id').find('.modal-content').prepend('<div class="w-100" style="border-top:3px solid #2a2a4c;"></div>');
+              $('#bootbox-id').find('.modal-content').css({ 'border-radius': '0' });
+              $('#bootbox-id').find('.modal-title').css({ 'width': '100%' });
+              $('#bootbox-id').find('.modal-title').addClass('text-center');
+              $('#bootbox-id').find('.modal-title').prepend('<i class="far fa-check-circle text-lawdians" style="font-size:45px;"></i>');
+              // $('#bootbox-id').find('.modal-title').prepend('<i class="fa fa-exclamation-circle text-lawdians" style="font-size:45px;"></i>');
+              $('#bootbox-id').find('.bootbox-close-button').hide();
+              $('#bootbox-id').find('.modal-footer').css({ 'border-top': '0', 'justify-content': 'center' });
+              $('#bootbox-id').find('.modal-footer').addClass('text-center mb-3');
+              // $('#bootbox-id').css({'max-width':'600px'});
+              $('#bootbox-id').find('.close').css({ 'border': '1px solid #eee', 'background-color': '#eee', 'border-radius': '100px', 'padding': '0', 'width': '25px' });
+              $('#bootbox-id').find('.bootbox-body').addClass('text-center mt-2');
+              // $('#bootbox-id').find('.modal-header').prepend('<div style="width:25px;"></div>');
+            });
+            break;
+
+          case 'danger':
+            var dangerBootbox = bootbox.dialog({
+              title: '<div>' + title + '</div>',
+              message: '<span style="word-break:keep-all;">' + msg + '</span>',
+              buttons: {
+                success: {
+                  label: "확인",
+                  className: "btn-lawdians w-50 text-center",
+                  callback: function () {
+                    if (url.length !== 0) {
+                      location.href = url;
+                    }
+                  }
+                }
+              }
+            });
+            // dangerBootbox.on('shown.bs.modal', function(){
+            //     dangerBootbox.attr('id', 'bootbox-id');
+            // });
+            dangerBootbox.init(function () {
+              dangerBootbox.attr('id', 'bootbox-id');
+              $('#bootbox-id').find('.modal-content').prepend('<div class="w-100" style="border-top:3px solid #2a2a4c;"></div>');
+              $('#bootbox-id').find('.modal-content').css({ 'border-radius': '0' });
+              $('#bootbox-id').find('.modal-title').css({ 'width': '100%' });
+              $('#bootbox-id').find('.modal-title').addClass('text-center');
+              // $('.modal-dialog').find('.modal-title').prepend('<i class="far fa-check-circle text-lawdians" style="font-size:45px;"></i>');
+              $('#bootbox-id').find('.modal-title').prepend('<i class="fa fa-exclamation-circle text-lawdians" style="font-size:45px;"></i>');
+              $('#bootbox-id').find('.modal-footer').css({ 'border-top': '0', 'justify-content': 'center' });
+              $('#bootbox-id').find('.modal-footer').addClass('text-center mb-3');
+              $('#bootbox-id').find('.bootbox-close-button').hide();
+              // $('#bootbox-id').css({'max-width':'600px'});
+              $('#bootbox-id').find('.close').css({ 'border': '1px solid #eee', 'background-color': '#eee', 'border-radius': '100px', 'padding': '0', 'width': '25px' });
+              $('#bootbox-id').find('.bootbox-body').addClass('text-center mt-2');
+              // $('#bootbox-id').find('.modal-header').prepend('<div style="width:25px;"></div>');
+            });
+            break;
+          case 'confirm':
+            var confirmBootbox = bootbox.confirm({
+              title: '<div class="font-JUA">로그인 필요</div>',
+              message: '<div class="font-JUA">로그인 페이지로 이동합니다</div>',
+              buttons: {
+                confirm: {
+                  label: "확인",
+                  className: "bg-lawdians text-white px-5"
+                },
+                cancel: {
+                  label: "취소",
+                  className: 'bg-white border px-5'
+                }
+              },
+              callback: function (result) {
+                if (result) {
+                  location.href = "/users/login";
+                }
+              }
+            });
+            confirmBootbox.init(function () {
+              $('.modal-content').prepend('<div class="w-100" style="border-top:3px solid #2a2a4c;"></div>');
+              $('.modal-content').css({ 'border-radius': '0' });
+              $('.modal-dialog').find('.modal-title').css({ 'width': '100%' });
+              $('.modal-dialog').find('.modal-title').addClass('text-center');
+              $('.modal-dialog').find('.modal-title').prepend('<i class="far fa-check-circle text-lawdians" style="font-size:45px;"></i>');
+              $('.modal-dialog').find('.modal-footer').css({ 'border-top': '0' });
+              $('.modal-dialog').find('.modal-footer').addClass('text-center mb-3 justify-content-center');
+              $('.modal-dialog').css({ 'max-width': '500px' });
+              $('.close').css({ 'padding': '0', 'width': '25px' });
+              $('.modal-dialog').find('.bootbox-body').addClass('text-center');
+              $('.modal-dialog').find('.bootbox-body').addClass('mt-2');
+            });
+            break;
+        }
+      }
+      $('.indexPwChange').click(function () {
+        var newPw = $('#indexPwChange').val();
+        $.post('/pwReset', {
+          //member_no: member_no,
+          member_pw: newPw,
+          type: 1
+        }, function (cb) {
+          if (cb.result === 'success') {
+            customBootBox('danger', '알림', "변경 완료", '/');
+          } else {
+            customBootBox('danger', '알림', "비밀번호 변경 실패", '');
+          }
+        });
+      });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,401 @@
+<div class="container-fluid user-list">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">회원 등록</h1>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">회원 정보 입력</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <small id="memberIdHelper" class="pl-5 form-text invalid-feedback">*사용중인 아이디입니다.</small>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">아이디</span>
+          </div>
+          <input id="member_id" type="text" class="form-control" placeholder="아이디 입력[필수]" />
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">비밀번호</span>
+          </div>
+          <input id="member_pw" type="password" class="form-control" placeholder="비밀번호 입력[필수]" />
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">이름</span>
+          </div>
+          <input id="member_name" type="text" class="form-control" placeholder="이름 입력[필수]" />
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">주민번호</span>
+          </div>
+          <input id="member_personal_number" type="text" class="form-control" placeholder="주민번호 입력[필수]" />
+        </div>
+        <small id="recommenderIdHelper" class="pl-5 form-text invalid-feedback">*추천인이 존재하지 않습니다</small>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">추천인</span>
+          </div>
+          <% if(member_grade == 1) {%>
+          <input id="recommender_id" type="text" class="form-control" placeholder="추천인ID 입력[선택]" />
+          <% }else{ %>
+          <input id="recommender_id" type="text" class="form-control" placeholder="추천인ID 입력[필수]" />
+          <% } %>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group">
+            <select id="member_grade" class="custom-select" id="inputGroupSelect02">
+              <!-- <option value="0" selected>등급 선택</option> -->
+              <option value="3" selected>준회원</option>
+              <option value="2">정회원</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">선택하기</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">은행 정보 입력</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="input-group mb-3">
+          <div class="input-group">
+            <select id="bank_name" class="custom-select">
+              <option value="">은행 이름</option>
+              <option value="001">한국</option>
+              <option value="002">산업</option>
+              <option value="003">기업</option>
+              <option value="004">국민</option>
+              <option value="005">KEB하나</option>
+              <option value="007">수협</option>
+              <option value="008">수출입</option>
+              <option value="011">농협</option>
+              <option value="012">지역농ㆍ축협</option>
+              <option value="020">우리</option>
+              <option value="023">SC제일</option>
+              <option value="027">한국씨티</option>
+              <option value="031">대구</option>
+              <option value="032">부산</option>
+              <option value="034">광주</option>
+              <option value="035">제주</option>
+              <option value="037">전북</option>
+              <option value="039">경남</option>
+              <option value="045">새마을금고</option>
+              <option value="048">신협</option>
+              <option value="050">상호저축은행</option>
+              <option value="052">모간스탠리</option>
+              <option value="054">ＨＳＢＣ</option>
+              <option value="055">도이치은행</option>
+              <option value="057">JP모간체이스</option>
+              <option value="058">미즈호</option>
+              <option value="059">엠유에프지은행</option>
+              <option value="060">Ｂ．Ｏ．Ａ</option>
+              <option value="061">비엔피파리바</option>
+              <option value="062">중국공상</option>
+              <option value="063">중국</option>
+              <option value="064">산림조합</option>
+              <option value="065">대화</option>
+              <option value="066">교통</option>
+              <option value="067">중국건설은행</option>
+              <option value="071">우체국</option>
+              <option value="076">신용보증기금</option>
+              <option value="077">기술보증기금</option>
+              <option value="081">KEB하나</option>
+              <option value="088">신한</option>
+              <option value="089">케이뱅크</option>
+              <option value="090">카카오뱅크</option>
+              <option value="093">한국주택금융공사</option>
+              <option value="094">서울보증보험</option>
+              <option value="096">한국전자금융(주)</option>
+              <option value="099">금융결제원</option>
+              <option value="101">한국신용정보원</option>
+              <option value="102">대신저축은행</option>
+              <option value="103">에스비아이저축은행</option>
+              <option value="104">에이치케이저축은행</option>
+              <option value="105">웰컴저축은행</option>
+              <option value="106">신한저축은행</option>
+              <option value="209">유안타증권</option>
+              <option value="218">KB증권</option>
+              <option value="221">골든브릿지투자증권</option>
+              <option value="222">한양증권</option>
+              <option value="223">리딩투자증권</option>
+              <option value="224">BNK투자증권</option>
+              <option value="225">IBK투자증권</option>
+              <option value="227">KTB투자증권</option>
+              <option value="238">미래에셋대우</option>
+              <option value="240">삼성증권</option>
+              <option value="243">한국투자증권</option>
+              <option value="247">NH투자증권</option>
+              <option value="261">교보증권</option>
+              <option value="262">하이투자증권</option>
+              <option value="263">현대차증권</option>
+              <option value="264">키움증권</option>
+              <option value="265">이베스트투자증권</option>
+              <option value="266">SK증권</option>
+              <option value="267">대신증권</option>
+              <option value="269">한화투자증권</option>
+              <option value="270">하나금융투자</option>
+              <option value="278">신한금융투자</option>
+              <option value="279">DB금융투자</option>
+              <option value="280">유진투자증권</option>
+              <option value="287">메리츠종합금융증권</option>
+              <option value="290">부국증권</option>
+              <option value="291">신영증권</option>
+              <option value="292">케이프투자증권</option>
+              <option value="293">한국증권금융</option>
+              <option value="294">펀드온라인코리아</option>
+              <option value="295">우리종합금융</option>
+              <option value="299">아주캐피탈</option>
+              <option value="431">미래에셋생명</option>
+              <option value="432">한화생명</option>
+              <option value="433">교보라이프플래닛생명</option>
+              <option value="434">푸본현대생명</option>
+              <option value="435">라이나생명</option>
+              <option value="436">교보생명</option>
+              <option value="437">에이비엘생명</option>
+              <option value="438">신한생명</option>
+              <option value="439">KB생명보험</option>
+              <option value="440">농협생명</option>
+              <option value="441">삼성화재</option>
+              <option value="442">현대해상</option>
+              <option value="443">DB손해보험</option>
+              <option value="444">KB손해보험</option>
+              <option value="445">롯데손해보험</option>
+              <option value="446">오렌지라이프생명보험</option>
+              <option value="447">악사손해보험</option>
+              <option value="448">메리츠화재</option>
+              <option value="449">농협손해보험</option>
+              <option value="450">푸르덴셜생명보험</option>
+              <option value="452">삼성생명</option>
+              <option value="453">흥국생명</option>
+              <option value="454">한화손해보험</option>
+              <option value="455">AIA생명보험</option>
+              <option value="456">DGB생명보험</option>
+              <option value="457">DB생명보험</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">선택하기</label>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">계좌번호</span>
+          </div>
+          <input id="account_number" type="text" class="form-control" placeholder="계좌번호 입력[필수]" />
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">예금주</span>
+          </div>
+          <input id="account_holder" type="text" class="form-control" placeholder="예금주 입력[필수]" />
+        </div>
+      </div>
+      <button type="button" id="userAddBtn" class="mt-3 btn btn-primary btn-lg btn-block py-0">
+        <small>등록 하기</small>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#recommenderIdHelper").hide();
+  $("#memberIdHelper").hide();
+  var myMember_grade = "<%=member_grade %>";
+  var entryNextArr = false;
+  $(function () {
+    $(".left-menu")
+      .siblings()
+      .removeClass("active");
+    $(".left-menu")
+      .eq(1)
+      .addClass("active");
+  });
+
+  $("#member_id").focusout(function () {
+    entryNext = false;
+    var member_id = $.trim($("#member_id").val());
+    if (member_id === "") {
+      return false;
+    } else {
+      var $memberIdHelper = $("#memberIdHelper");
+      $.post(
+        "/idValidCheck",
+        {
+          member_id: member_id,
+          type: 1 //아이디 중복 체크
+        },
+        function (cb) {
+          if (cb.result === "isExist") {
+            entryNext = false;
+            $("#memberIdHelper").show();
+          } else {
+            $("#memberIdHelper").hide();
+            entryNext = true;
+            return false;
+          }
+        }
+      );
+      return true;
+    }
+  });
+
+  $("#recommender_id").focusout(function () {
+    var recommender_id = $.trim($("#recommender_id").val());
+    if (recommender_id === "") {
+      return false;
+    } else {
+      var $recommenderIdHelper = $("#recommenderIdHelper");
+      $.post(
+        "/idValidCheck",
+        {
+          member_id: recommender_id,
+          type: 2 //추천인 유무 체크
+        },
+        function (cb) {
+          if (cb.result === "isExist") {
+            $("#recommenderIdHelper").show();
+            $("#recommender_id").val("");
+          } else {
+            $("#recommenderIdHelper").hide();
+            return false;
+          }
+        }
+      );
+      return true;
+    }
+  });
+
+  $("#userAddBtn").click(function () {
+    var member_id = $("#member_id").val();
+    var member_name = $("#member_name").val();
+    var member_personal_number = $("#member_personal_number").val();
+    var member_pw = $("#member_pw").val();
+    var recommender_id = $("#recommender_id")
+      .val()
+      .trim();
+    var member_grade = $("#member_grade option:selected").val();
+    var bank_name = $("#bank_name option:selected").text();
+    var bank_code = $("#bank_name option:selected").val();
+    var account_number = $("#account_number").val();
+    var account_holder = $("#account_holder").val();
+    var phoneExp = /^[0-9]+$/;
+    var nameReg = /([^가-힣\x20a-zA-Z])/i;
+    if (
+      member_id === "" ||
+      member_name === "" ||
+      member_personal_number === "" ||
+      member_pw === "" ||
+      member_grade === 0 ||
+      bank_code === "" ||
+      account_number === "" ||
+      account_holder === ""
+    ) {
+      customBootBox("danger", "알림", "필수 입력란을 모두 입력하세요.", "");
+    } else {
+      if (!phoneExp.test(member_id)) {
+        customBootBox(
+          "danger",
+          "아이디",
+          "아이디는 전화번호만 기재해주세요.",
+          ""
+        );
+        return false;
+      }
+      if (nameReg.test(member_name)) {
+        customBootBox(
+          "danger",
+          "이름",
+          "이름은 특수문자, 숫자를 제외하고 입력할 수 있습니다.",
+          ""
+        );
+        return false;
+      }
+      if (!phoneExp.test(member_personal_number)) {
+        customBootBox("danger", "주민등록번호", "숫자만 입력 가능합니다", "");
+        return false;
+      }
+      if (myMember_grade != 1 && recommender_id == "") {
+        customBootBox(
+          "danger",
+          "정회원 회원등록",
+          "추천인 아이디는 필수 입력입니다",
+          ""
+        );
+        return false;
+      }
+      if (recommender_id !== "" && !phoneExp.test(recommender_id)) {
+        customBootBox(
+          "danger",
+          "추천인 ID",
+          "추천인 아이디는 전화번호만 기재해주세요.",
+          ""
+        );
+        return false;
+      }
+      if (!phoneExp.test(account_number)) {
+        customBootBox(
+          "danger",
+          "계좌번호",
+          "계좌번호는 숫자만 입력 가능합니다",
+          ""
+        );
+        return false;
+      }
+      if (nameReg.test(account_holder)) {
+        customBootBox(
+          "danger",
+          "예금주",
+          "예금주는 특수문자, 숫자를 제외하고 입력할 수 있습니다.",
+          ""
+        );
+        return false;
+      }
+      if (!entryNext) {
+        customBootBox("danger", "아이디", "입력하신 아이디를 확인해주세요", "");
+        return false;
+      }
+      $.post(
+        "/userAdd",
+        {
+          member_id: member_id,
+          member_name: member_name,
+          member_personal_number: member_personal_number,
+          member_pw: member_pw,
+          recommender_id: recommender_id,
+          member_grade: member_grade,
+          bank_name: bank_name,
+          bank_code: bank_code,
+          account_number: account_number,
+          account_holder: account_holder
+        },
+        function (cb) {
+          if (cb.result === "success") {
+            if (myMember_grade == 1) {
+              customBootBox("danger", "알림", "회원 등록 성공", "/userList");
+            } else {
+              customBootBox(
+                "danger",
+                "알림",
+                "회원 등록 성공",
+                "/registUserList"
+              );
+            }
+          } else {
+            customBootBox("danger", "알림", cb.msg, "");
+          }
+        }
+      );
+    }
+  });
+</script>

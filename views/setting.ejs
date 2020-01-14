@@ -1,0 +1,103 @@
+<div class="container-fluid user-list">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">사이트 관리</h1>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">PET 정보 입력</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="input-group mb-5">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">PET 가격[원]</span>
+          </div>
+          <input id="PET_price" type="text" class="form-control">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">정회원 정산[%]</span>
+          </div>
+          <input id="rate1" type="text" class="form-control">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">회원 정산[%]</span>
+          </div>
+          <input id="rate2" type="text" class="form-control">
+        </div>
+      </div>
+      <button type="button" id="settingModify" class="mt-3 btn btn-primary btn-lg btn-block py-0"><small>수정</small></button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+
+<script>
+  var PET_price = '<%= settingOption.PET_price %>';
+  var major_member_balance = '<%= settingOption.major_member_balance %>';
+  var team_member_balance = '<%= settingOption.team_member_balance %>';
+  $(function () {
+    $(".left-menu")
+      .siblings()
+      .removeClass("active");
+    $(".left-menu")
+      .eq(6)
+      .addClass("active");
+    $('#PET_price').val(PET_price);
+    $('#rate1').val(major_member_balance);
+    $('#rate2').val(team_member_balance);
+  });
+  $('#settingModify').click(function () {
+    var PET_price = $('#PET_price').val();
+    var rate1 = parseInt($('#rate1').val());
+    var rate2 = parseInt($('#rate2').val());
+    var phoneExp = /^[0-9]+$/;
+    if (!phoneExp.test(PET_price)) {
+      customBootBox('danger', 'PET 가격', "숫자만 입력 가능", '');
+      return false;
+    }
+    if (!phoneExp.test(rate1)) {
+      customBootBox('danger', '정회원 정산 비율', "숫자만 입력 가능", '');
+      return false;
+    }
+    if (!phoneExp.test(rate2)) {
+      customBootBox('danger', '회원 정산 비율', "숫자만 입력 가능", '');
+      return false;
+    }
+    $.post('/setting', {
+      PET_price: PET_price,
+      rate1: rate1,
+      rate2: rate2
+    }, function (cb) {
+      if (cb.result === 'success') {
+        customBootBox('success', '알림', "수정 성공", '');
+      } else {
+        customBootBox('danger', '알림', "수정 실패", '');
+      }
+    })
+    // if (rate1 + rate2 > 100) {
+    //   customBootBox('danger','정산 비율 조절',"정회원/회원 정산비율의 합이 100%를 넘을 수 없습니다.",'');
+    //   return false;
+    // } else {
+    //   $.post('/setting',{
+    //     PET_price: PET_price,
+    //     rate1: rate1,
+    //     rate2: rate2
+    //   },function (cb) {
+    //     if (cb.result === 'success') {
+    //       customBootBox('success','알림',"수정 성공",'');
+    //     } else {
+    //       customBootBox('danger','알림',"수정 실패",'');
+    //     }
+    //   })
+
+    // }
+  });
+</script>

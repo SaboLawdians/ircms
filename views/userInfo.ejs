@@ -1,0 +1,616 @@
+<style>
+  @media (max-width:767px) {
+      .card-body{
+      padding: 1.25rem 0.3rem;
+    }
+}
+</style>
+<div class="container-fluid user-list">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">회원 정보</h1>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">회원정보<button type="button" class="btn btn-primary d-md-block d-none float-right "
+          data-toggle="modal" data-target="#pwReset">
+          비밀번호 초기화
+        </button></h6><button type="button" class="mt-2 btn btn-primary btn-lg btn-block py-0 d-md-none d-sm-block"
+        data-toggle="modal" data-target="#pwReset">
+        <small>
+          비밀번호 초기화</small>
+      </button>
+      <div class="modal fade" id="pwReset" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">비밀번호 초기화 확인</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              해당 회원의 비밀번호가 "bboompet123!"로 초기화됩니다
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary pwResetSubmit">확인</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">아이디</span>
+          </div>
+          <input id="member_id" type="text" class="form-control" placeholder="아이디 입력[필수]">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">이름</span>
+          </div>
+          <input id="member_name" type="text" class="form-control" placeholder="이름 입력[필수]">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">주민번호</span>
+          </div>
+          <input id="member_personal_number" type="text" class="form-control" placeholder="주민번호 입력[필수]">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group">
+            <select id="member_grade" class="custom-select" id="inputGroupSelect02">
+              <option value="0" selected>등급 변경</option>
+              <option value="3">준회원</option>
+              <option value="2">정회원</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">등급 선택</label>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text px-2" id="basic-addon1">매출액</span>
+          </div>
+          <input id="deposit" type="text" disabled class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#depositBtn">
+              수정
+            </button>
+            <div class="modal fade" id="depositBtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">매출액 관리</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">KRW</span>
+                      </div>
+                      <input type="number" id="addDeposit" class="form-control" aria-label="Amount (to the nearest dollar)">
+                      <div class="input-group-append">
+                        <span class="input-group-text">원</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary depositSubmit" typeof="0">추가</button>
+                    <button type="button" class="btn btn-danger depositSubmit" typeof="1">차감</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text px-2" id="basic-addon1">PET</span>
+        </div>
+        <input id="PET" type="text" disabled class="form-control">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PETBtn">
+            수정
+          </button>
+          <div class="modal fade" id="PETBtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">PET 추가</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">PET</span>
+                    </div>
+                    <input type="number" id="addPET" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <div class="input-group-append">
+                      <span class="input-group-text">PET</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary petSubmit" typeof="0">추가</button>
+                  <button type="button" class="btn btn-danger petSubmit" typeof="1">차감</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text px-2" id="basic-addon1">수당</span>
+        </div>
+        <input id="benefit" type="text" disabled class="form-control">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#benefitBtn">
+            수정
+          </button>
+          <div class="modal fade" id="benefitBtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">수당 추가</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">수당</span>
+                    </div>
+                    <input type="number" id="addbenefit" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <div class="input-group-append">
+                      <span class="input-group-text">point</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary benefitSubmit" typeof="0">추가</button>
+                  <button type="button" class="btn btn-danger benefitSubmit" typeof="3">차감</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">추천인 정보</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <small id="recommenderIdHelper" class="pl-3 form-text invalid-feedback"></small>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">추천인 아이디</span>
+          </div>
+          <input id="recommender_id" type="text" class="form-control" placeholder="아이디 입력[필수]">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">추천인 이름</span>
+          </div>
+          <input id="recommender_name" disabled type="text" class="form-control" placeholder="이름 입력[필수]">
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">은행 정보 입력</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <div class="input-group mb-3">
+          <div class="input-group">
+            <select id="bank_name" class="custom-select">
+              <option value="">은행 이름</option>
+              <option value="001">한국</option>
+              <option value="002">산업</option>
+              <option value="003">기업</option>
+              <option value="004">국민</option>
+              <option value="005">KEB하나</option>
+              <option value="007">수협</option>
+              <option value="008">수출입</option>
+              <option value="011">농협</option>
+              <option value="012">지역농ㆍ축협</option>
+              <option value="020">우리</option>
+              <option value="023">SC제일</option>
+              <option value="027">한국씨티</option>
+              <option value="031">대구</option>
+              <option value="032">부산</option>
+              <option value="034">광주</option>
+              <option value="035">제주</option>
+              <option value="037">전북</option>
+              <option value="039">경남</option>
+              <option value="045">새마을금고</option>
+              <option value="048">신협</option>
+              <option value="050">상호저축은행</option>
+              <option value="052">모간스탠리</option>
+              <option value="054">ＨＳＢＣ</option>
+              <option value="055">도이치은행</option>
+              <option value="057">JP모간체이스</option>
+              <option value="058">미즈호</option>
+              <option value="059">엠유에프지은행</option>
+              <option value="060">Ｂ．Ｏ．Ａ</option>
+              <option value="061">비엔피파리바</option>
+              <option value="062">중국공상</option>
+              <option value="063">중국</option>
+              <option value="064">산림조합</option>
+              <option value="065">대화</option>
+              <option value="066">교통</option>
+              <option value="067">중국건설은행</option>
+              <option value="071">우체국</option>
+              <option value="076">신용보증기금</option>
+              <option value="077">기술보증기금</option>
+              <option value="081">KEB하나</option>
+              <option value="088">신한</option>
+              <option value="089">케이뱅크</option>
+              <option value="090">카카오뱅크</option>
+              <option value="093">한국주택금융공사</option>
+              <option value="094">서울보증보험</option>
+              <option value="096">한국전자금융(주)</option>
+              <option value="099">금융결제원</option>
+              <option value="101">한국신용정보원</option>
+              <option value="102">대신저축은행</option>
+              <option value="103">에스비아이저축은행</option>
+              <option value="104">에이치케이저축은행</option>
+              <option value="105">웰컴저축은행</option>
+              <option value="106">신한저축은행</option>
+              <option value="209">유안타증권</option>
+              <option value="218">KB증권</option>
+              <option value="221">골든브릿지투자증권</option>
+              <option value="222">한양증권</option>
+              <option value="223">리딩투자증권</option>
+              <option value="224">BNK투자증권</option>
+              <option value="225">IBK투자증권</option>
+              <option value="227">KTB투자증권</option>
+              <option value="238">미래에셋대우</option>
+              <option value="240">삼성증권</option>
+              <option value="243">한국투자증권</option>
+              <option value="247">NH투자증권</option>
+              <option value="261">교보증권</option>
+              <option value="262">하이투자증권</option>
+              <option value="263">현대차증권</option>
+              <option value="264">키움증권</option>
+              <option value="265">이베스트투자증권</option>
+              <option value="266">SK증권</option>
+              <option value="267">대신증권</option>
+              <option value="269">한화투자증권</option>
+              <option value="270">하나금융투자</option>
+              <option value="278">신한금융투자</option>
+              <option value="279">DB금융투자</option>
+              <option value="280">유진투자증권</option>
+              <option value="287">메리츠종합금융증권</option>
+              <option value="290">부국증권</option>
+              <option value="291">신영증권</option>
+              <option value="292">케이프투자증권</option>
+              <option value="293">한국증권금융</option>
+              <option value="294">펀드온라인코리아</option>
+              <option value="295">우리종합금융</option>
+              <option value="299">아주캐피탈</option>
+              <option value="431">미래에셋생명</option>
+              <option value="432">한화생명</option>
+              <option value="433">교보라이프플래닛생명</option>
+              <option value="434">푸본현대생명</option>
+              <option value="435">라이나생명</option>
+              <option value="436">교보생명</option>
+              <option value="437">에이비엘생명</option>
+              <option value="438">신한생명</option>
+              <option value="439">KB생명보험</option>
+              <option value="440">농협생명</option>
+              <option value="441">삼성화재</option>
+              <option value="442">현대해상</option>
+              <option value="443">DB손해보험</option>
+              <option value="444">KB손해보험</option>
+              <option value="445">롯데손해보험</option>
+              <option value="446">오렌지라이프생명보험</option>
+              <option value="447">악사손해보험</option>
+              <option value="448">메리츠화재</option>
+              <option value="449">농협손해보험</option>
+              <option value="450">푸르덴셜생명보험</option>
+              <option value="452">삼성생명</option>
+              <option value="453">흥국생명</option>
+              <option value="454">한화손해보험</option>
+              <option value="455">AIA생명보험</option>
+              <option value="456">DGB생명보험</option>
+              <option value="457">DB생명보험</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">은행 선택</label>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">계좌번호</span>
+          </div>
+          <input id="account_number" type="text" class="form-control" placeholder="계좌번호 입력[필수]">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">예금주</span>
+          </div>
+          <input id="account_holder" type="text" class="form-control" placeholder="예금주 입력[필수]">
+        </div>
+      </div>
+      <button type="button" id="userModifyBtn" class="mt-3 btn btn-primary btn-lg btn-block py-0"><small>수정</small></button>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+
+
+<script>
+  var cur_member_grade = '<%= member_grade %>';
+  var member_no = '<%= memberInfo.member_no %>';
+  var member_id = '<%= memberInfo.member_id %>';
+  var recommenderExist = '<%= recommenderExist %>';
+  var member_name = '<%= memberInfo.member_name %>';
+  var get_member_grade = '<%= memberInfo.member_grade %>';
+  var bank_name = '<%= memberInfo.bank_name %>';
+  var bank_code = '<%= memberInfo.bank_code %>';
+  var account_number = '<%= memberInfo.account_number %>';
+  var account_holder = '<%= memberInfo.account_holder %>';
+  var member_personal_number = '<%= memberInfo.member_personal_number %>';
+  var deposit = '<%= memberInfo.deposit %>';
+  var PET = '<%= memberInfo.PET %>';
+  var recommender_id = '<%= memberInfo.recommender_id %>';
+  var recommender_name = '<%=recommenderName%>';
+  var recommenderNo = '<%= recommenderNo%>';
+  var recommender_serial_key = "<%=recommender_serial_key %>";
+  var benefit = '<%= memberInfo.benefit %>';
+  var recommender_check = true;
+  var recommender_change = false;
+  var newRecommender_id = "";
+  $(function () {
+    $(".left-menu")
+      .siblings()
+      .removeClass("active");
+    $(".left-menu")
+      .eq(1)
+      .addClass("active");
+    $("#recommenderIdHelper").hide();
+    $('#member_id').val(member_id);
+    $('#member_name').val(member_name);
+    $('#member_grade').val(get_member_grade).prop("selected", true);
+    $('#bank_name').val(bank_code).prop("selected", true);
+    $('#account_number').val(account_number);
+    $('#account_holder').val(account_holder);
+    $('#recommender_name').val(recommender_name);
+    $('#recommender_id').val(recommender_id);
+    $('#deposit').val(comma(deposit));
+    $('#PET').val(comma(PET));
+    $('#benefit').val(comma(benefit));
+    $('#member_personal_number').val(member_personal_number);
+  });
+
+  $('.petSubmit').click(function () {
+    var addPET = $('#addPET').val();
+    var addsub = $(this).attr('typeof');
+    if (addsub == 1 && addPET * 1 > PET * 1) {
+      customBootBox('danger', 'PET 차감 실패', "회원 보유 PET보다 많은 수치를 차감할 수 없습니다", '');
+      return false
+    }
+    if (addPET === "") {
+      customBootBox('danger', 'PET 확인', "PET 입력 값을 확인해주세요", '');
+      return false
+    }
+    $.post('/userPET', {
+      member_no: member_no,
+      addPET: addPET,
+      addsub: addsub,
+      recommender_id: recommender_id,
+    }, function (cb) {
+      if (cb.result === 'success') {
+        customBootBox('danger', '알림', "보유 PET 수정 성공", '/userInfo?member_no=' + member_no);
+      } else {
+        customBootBox('danger', '알림', "보유 PET 수정 실패", '');
+      }
+    });
+  });
+
+  $('.benefitSubmit').click(function () {
+    var addbenefit = $('#addbenefit').val();
+    var addsub = $(this).attr('typeof');
+    console.log(addsub);
+    console.log(addbenefit);
+    console.log(benefit);
+    if (addsub == 3 && addbenefit * 1 > benefit * 1) {
+      customBootBox('danger', '수당 차감 실패', "회원 보유 수당보다 많은 수치를 차감할 수 없습니다", '');
+      return false
+    }
+    if (addbenefit === "") {
+      customBootBox('danger', '수당 확인', "수당 입력 값을 확인해주세요", '');
+      return false
+    }
+    $.post('/userBenefit', {
+      member_no: member_no,
+      addbenefit: addbenefit,
+      addsub: addsub,    //type
+      benefit: benefit
+    }, function (cb) {
+      if (cb.result === 'success') {
+        customBootBox('danger', '알림', "보유 수당 수정 성공", '/userInfo?member_no=' + member_no);
+      } else {
+        customBootBox('danger', '알림', "보유 수당 수정 실패", '');
+      }
+    });
+  });
+
+  $('.depositSubmit').click(function () {
+    var addDeposit = $('#addDeposit').val();
+    var type = $(this).attr('typeof');
+    if (type == 1 && addDeposit * 1 > deposit * 1) {
+      customBootBox('danger', '매출액 차감 실패', "회원 매출액보다 큰 금액을 차감할 수 없습니다", '');
+      return false
+    }
+    if (addDeposit === "") {
+      customBootBox('danger', '매출액 확인', "매출액 입력 값을 확인해주세요", '');
+      return false
+    }
+    $.post('/userDeposit', {
+      member_no: member_no,
+      addDeposit: addDeposit,
+      type: type,
+      //PET : PET
+    }, function (cb) {
+      if (cb.result === 'success') {
+        customBootBox('danger', '알림', "매출액 수정 성공", '/userInfo?member_no=' + member_no);
+      } else {
+        customBootBox('danger', '알림', "매출액 수정 실패", '');
+      }
+    });
+  });
+
+  $("#recommender_id").focusout(function () {
+    newRecommender_id = $.trim($("#recommender_id").val());
+    if (newRecommender_id === "") {
+      return false;
+    } else {
+      var $recommenderIdHelper = $("#recommenderIdHelper");
+      $.post(
+        "/idValidCheck",
+        {
+          member_id: newRecommender_id,
+          type: 2, //추천인 유무 체크
+          member_no: member_no
+        },
+        function (cb) {
+          console.log(cb);
+          if (cb.result === "isExist") {
+            $("#recommenderIdHelper").text(cb.msg);
+            $("#recommenderIdHelper").show();
+            recommender_check = false;
+            return false;
+          } else {
+            $("#recommenderIdHelper").hide();
+            recommender_check = true;
+            return false;
+          }
+        }
+      );
+      return true;
+    }
+  });
+
+  $('#userModifyBtn').click(function () {
+    var member_id = $('#member_id').val();
+    var member_name = $('#member_name').val();
+    var member_personal_number = $('#member_personal_number').val();
+    newRecommender_id = $('#recommender_id').val();
+    var member_grade = $('#member_grade option:selected').val();
+    var bank_name = $('#bank_name option:selected').text();
+    var bank_code = $("#bank_name option:selected").val();
+    var account_number = $('#account_number').val();
+    var account_holder = $('#account_holder').val();
+    var phoneExp = /^[0-9]+$/;
+    var nameReg = /([^가-힣\x20a-zA-Z])/i;
+
+    console.log(member_id);
+    console.log(newRecommender_id);
+    if (member_id === '' || member_name === '' || member_personal_number === '' || member_grade === 0 || bank_name === '' || account_number === '' || account_holder === '') {
+      customBootBox('danger', '알림', "필수 입력란을 모두 입력하세요.", '');
+      return false;
+    } else {
+      if (!phoneExp.test(member_id)) {
+        customBootBox('danger', '아이디', "아이디는 전화번호만 기재해주세요.", '');
+        return false;
+      }
+      if (nameReg.test(member_name)) {
+        customBootBox('danger', '이름', "이름은 특수문자, 숫자를 제외하고 입력할 수 있습니다.", '');
+        return false;
+      }
+      if (!phoneExp.test(member_personal_number)) {
+        customBootBox('danger', '주민등록번호', "숫자만 입력 가능합니다", '');
+        return false;
+      }
+
+      if (newRecommender_id !== "" && !phoneExp.test(newRecommender_id)) {
+        customBootBox('danger', '추천인 ID', "추천인 아이디는 전화번호만 기재해주세요.", '');
+        return false;
+      }
+      if (!phoneExp.test(account_number)) {
+        customBootBox('danger', '계좌번호', "계좌번호는 숫자만 입력 가능합니다", '');
+        return false;
+      }
+      if (nameReg.test(account_holder)) {
+        customBootBox('danger', '예금주', "예금주는 특수문자, 숫자를 제외하고 입력할 수 있습니다.", '');
+        return false;
+      }
+      if (!recommender_check) {
+        customBootBox('danger', '추천인 확인', "추천인을 확인해 주세요", '');
+        recommender_change = false;
+        return false;
+      }
+      if (member_id == newRecommender_id) {
+        customBootBox('danger', '추천인 확인', "자신을 추천인으로 등록할 수 없습니다", '');
+        recommender_change = false;
+        return false;
+      }
+      if (newRecommender_id !== recommender_id) { //추천인을 변경했는지 안했는지 확인
+        recommender_change = true;
+      }
+      $.post('/userModify', {
+        member_id: member_id,
+        member_name: member_name,
+        member_personal_number: member_personal_number,
+        recommender_id: newRecommender_id,
+        member_grade: member_grade,
+        bank_name: bank_name,
+        bank_code: bank_code,
+        account_number: account_number,
+        account_holder: account_holder,
+        member_no: member_no,
+        recommender_change: recommender_change,
+        recommender_serial_key: recommender_serial_key
+      }, function (cb) {
+        if (cb.result === 'success') {
+          customBootBox('danger', '알림', "정보 수정 성공", '/userInfo?member_no=' + member_no);
+        } else {
+          customBootBox('danger', '알림', "정보 수정 실패", '');
+        }
+      });
+    }
+  });
+  $('.pwResetSubmit').click(function () {
+    $.post('/pwReset', {
+      member_no: member_no,
+      type: 0
+    }, function (cb) {
+      if (cb.result === 'success') {
+        customBootBox('danger', '알림', "초기화 완료", '/userInfo?member_no=' + member_no);
+      } else {
+        customBootBox('danger', '알림', "비밀번호 초기화 실패", '');
+      }
+    });
+  });
+</script>

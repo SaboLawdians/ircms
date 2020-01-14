@@ -1,0 +1,233 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('ircms:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+  var queryUsers = require('../models/queryUsers');
+  var schedule = require('node-schedule');
+
+  //매출내역 처리일 변경 로직
+  // queryUsers.depositDate(function (callback) {
+  //   if (callback) {
+  //     console.log("성공");
+  //   } else {
+  //     console.log("실패");
+  //   }
+  // })
+
+  //PET내역 처리일 변경 로직
+  // queryUsers.PETDate(function (callback) {
+  //   if (callback) {
+  //     console.log("성공");
+  //   } else {
+  //     console.log("실패");
+  //   }
+  // })
+
+  //수당 0원으로 변경
+  // queryUsers.benefitReset(function (callback) {
+  //   if (callback) {
+  //     console.log("성공");
+  //   } else {
+  //     console.log("실패");
+  //   }
+  // });
+
+  //수당 수동 계산기
+  // queryUsers.getTodayDeposit(function (callback) {
+  //   if (callback.isSuccess) {
+  //     var todayDeposit = callback.todayDeposit; // 당일 매출액
+  //     console.log('benefit calculate start');
+  //     console.log(todayDeposit);
+  //     if (todayDeposit > 0) {
+  //       var todayBenefit = todayDeposit.toFixed(3);
+  //       //var todayBenefit = (todayDeposit / 2).toFixed(3); // 당일 분배 수당 1/2정책 사라짐
+  //       var majorHoldPET = callback.holdPET[0][0].majorPET;
+  //       var teamHoldPET = callback.holdPET[1][0].teamPET;
+  //       console.log("todayBenefit : " + todayBenefit);  //금일 전체 수당
+  //       console.log("majorHoldPET : " + majorHoldPET);  //전체 정회원 보유 PET
+  //       console.log("teamHoldPET : " + teamHoldPET);   //전체 준회원 보유 PET
+  //       //현재 배당 비율 호출 (정회원 30%, 준회원 70% 등)
+  //       queryUsers.getSettingOption(function (callback) {
+  //         if (callback.isSuccess) {
+  //           var major_balance = callback.settingOption.major_member_balance * 1;
+  //           var team_balance = callback.settingOption.team_member_balance * 1;
+  //           console.log("major_balance : " + major_balance + "%"); //정회원 수당 비율 %
+  //           console.log("team_balance : " + team_balance + "%");  //준회원 수당 비율 %
+
+  //           var majorBenefit = (todayBenefit * (major_balance / 100)).toFixed(3);
+  //           var teamBenefit = (todayBenefit * (team_balance / 100)).toFixed(3);
+  //           console.log("majorSumBenefit : " + majorBenefit);  //정회원 전체 수당
+  //           console.log("teamSumBenefit : " + teamBenefit);   //준회원 전체 수당
+
+  //           var majorBenefitUnit = (majorBenefit / majorHoldPET).toFixed(3);
+  //           var teamBenefitUnit = (teamBenefit / teamHoldPET).toFixed(3);
+
+  //           console.log("majorBenefitUnit : " + majorBenefitUnit);  //정회원 1PET당 수당
+  //           console.log("teamBenefitUnit : " + teamBenefitUnit);   //준회원 1PET당 수당
+  //           var datas = [majorBenefitUnit, teamBenefitUnit];
+  //           queryUsers.benefitHistory(datas, function (callback) {
+  //             if (callback) {
+  //               console.log('수당 자동계산기 완료');
+  //             } else {
+  //               console.log('수당 내역 등록 실패');
+  //             }
+  //           });
+  //         } else {
+  //           console.log("배당 비율 호출 실패");
+  //         }
+  //       });
+  //     } else {
+  //       console.log('금일 매출액이 없어서 수당 계산기 종료');
+  //     }
+  //   } else {
+  //     console.log('당일 매출액 호출 실패');
+  //   }
+  // });
+
+  //자동 수당 계산기
+  schedule.scheduleJob({ hour: 23, minute: 59, second: 0 }, function () {  //자정 직전 11시 59분에 실행
+    //1.당일 매출액 호출(완)
+    //2.관리자 제외 멤버 보유 PET 갯수 호출
+    //3.현재 배당 비율 호출(완)
+    //4.수당 계산
+    // PET 1개당 수당  = 당일 매출액의 절반 / (정회원 보유 PET + 준회원 보유 PET)
+    //5.PET을 보유한 멤버,보유 PET 호출
+    //6.개인 수당 * PET의 결과를 멤버 별 update
+    //7.수당 내역 목록에 추가
+    queryUsers.getTodayDeposit(function (callback) {
+      if (callback.isSuccess) {
+        var todayDeposit = callback.todayDeposit; // 당일 매출액
+        console.log('benefit calculate start');
+        console.log(todayDeposit);
+        if (todayDeposit > 0) {
+          var todayBenefit = todayDeposit.toFixed(3);
+          //var todayBenefit = (todayDeposit / 2).toFixed(3); // 당일 분배 수당 1/2정책 사라짐
+          var majorHoldPET = callback.holdPET[0][0].majorPET;
+          var teamHoldPET = callback.holdPET[1][0].teamPET;
+          console.log("todayBenefit : " + todayBenefit);  //금일 전체 수당
+          console.log("majorHoldPET : " + majorHoldPET);  //전체 정회원 보유 PET
+          console.log("teamHoldPET : " + teamHoldPET);   //전체 준회원 보유 PET
+          //현재 배당 비율 호출 (정회원 30%, 준회원 70% 등)
+          queryUsers.getSettingOption(function (callback) {
+            if (callback.isSuccess) {
+              var major_balance = callback.settingOption.major_member_balance * 1;
+              var team_balance = callback.settingOption.team_member_balance * 1;
+              console.log("major_balance : " + major_balance + "%"); //정회원 수당 비율 %
+              console.log("team_balance : " + team_balance + "%");  //준회원 수당 비율 %
+
+              var majorBenefit = (todayBenefit * (major_balance / 100)).toFixed(3);
+              var teamBenefit = (todayBenefit * (team_balance / 100)).toFixed(3);
+              console.log("majorSumBenefit : " + majorBenefit);  //정회원 전체 수당
+              console.log("teamSumBenefit : " + teamBenefit);   //준회원 전체 수당
+
+              var majorBenefitUnit = (majorBenefit / majorHoldPET).toFixed(3);
+              var teamBenefitUnit = (teamBenefit / teamHoldPET).toFixed(3);
+
+              console.log("majorBenefitUnit : " + majorBenefitUnit);  //정회원 1PET당 수당
+              console.log("teamBenefitUnit : " + teamBenefitUnit);   //준회원 1PET당 수당
+              var datas = [majorBenefitUnit, teamBenefitUnit];
+              queryUsers.benefitHistory(datas, function (callback) {
+                if (callback) {
+                  console.log('수당 자동계산기 완료');
+                } else {
+                  console.log('수당 내역 등록 실패');
+                }
+              });
+            } else {
+              console.log("배당 비율 호출 실패");
+            }
+          });
+        } else {
+          console.log('금일 매출액이 없어서 수당 계산기 종료');
+        }
+      } else {
+        console.log('당일 매출액 호출 실패');
+      }
+    });
+  });
+}

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>AllBandPet</title>
+
+    <!-- Custom fonts for this template-->
+    <link
+      href="../vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+
+    <!-- Custom styles for this template-->
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet" />
+  </head>
+
+  <body class="bg-gradient-primary">
+    <div class="container">
+      <!-- Outer Row -->
+      <div class="row justify-content-center" style="margin-top:15%">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+          <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+              <!-- Nested Row within Card Body -->
+              <div class="row">
+                <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                <div class="col-lg-6">
+                  <div class="px-2 py-5">
+                    <div class="text-center">
+                      <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                    </div>
+                    <form class="user">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-control form-control-user"
+                          id="memberId"
+                          aria-describedby="emailHelp"
+                          placeholder="id"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          class="form-control form-control-user"
+                          id="memberPwd"
+                          placeholder="pw"
+                        />
+                      </div>
+                      <!-- <div class="form-group">
+                      <div class="custom-control custom-checkbox small">
+                        <input type="checkbox" class="custom-control-input" id="customCheck">
+                        <label class="custom-control-label" for="customCheck">Remember Me</label>
+                      </div>
+                    </div> -->
+                      <button
+                        id="loginBtn"
+                        class="btn btn-primary btn-user btn-block"
+                      >
+                        Login
+                      </button>
+                      <hr />
+                      <div style="font-size: 0.7rem;">
+                        <p class="mb-0 font-weight-normal text-center">
+                          뿜펫 주식회사 | 대표이사 윤희숙 | 충청남도 천안시
+                          서북구 한들 1로 93, C동 201호
+                        </p>
+                        <p class="mb-0 font-weight-normal text-center">
+                          사업자 등록번호 528-87-00678 | E-mail :
+                          yoonjh8888@naver.com
+                        </p>
+                        <p class="mb-0 font-weight-normal text-center">
+                          로그인 및 기타문의 | 고객센터 : 1522-4220
+                        </p>
+                      </div>
+                    </form>
+                    <hr />
+                    <!-- <div class="text-center">
+                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                  </div>
+                  <div class="text-center">
+                    <a class="small" href="register.html">Create an Account!</a>
+                  </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../js/sb-admin-2.min.js"></script>
+    <script src="../js/bootbox.min.js"></script>
+    <script>
+      $("#loginBtn").click(function(e) {
+        e.preventDefault();
+        //location.href = "/index";
+
+        var memId = $("#memberId").val();
+        var memPwd = $("#memberPwd").val();
+
+        if (memId === "" && memPwd === "") {
+          customBootBox(
+            "danger",
+            "로그인 결과",
+            "아이디, 비밀번호를 입력해 주세요.",
+            ""
+          );
+          return false;
+        } else if (memId !== "" && memPwd === "") {
+          customBootBox(
+            "danger",
+            "로그인 결과",
+            "비밀번호를 입력해 주세요.",
+            ""
+          );
+          return false;
+        } else if (memId === "" && memPwd !== "") {
+          customBootBox("danger", "로그인 결과", "아이디를 입력해 주세요.", "");
+          return false;
+        }
+
+        //ajax 로그인
+        $.post(
+          "/users/login",
+          {
+            memberId: memId,
+            memberPwd: memPwd
+          },
+          function(cb) {
+            if (cb.result === "success") {
+              location.href = "/index";
+              // if(cb.member_grade < 3){
+              //   location.href = '/index';
+              // }else{
+              //   customBootBox('danger','로그인 결과',"회원 전용 블록체인 지갑이 개발중입니다. 기다려주세요.",'');
+              //   return false;
+              // }
+            } else {
+              customBootBox(
+                "danger",
+                "로그인 결과",
+                "아이디 또는 비밀번호가 일치하지 않습니다. 입력한 내용을 다시 확인해 주세요.",
+                ""
+              );
+              return false;
+            }
+          },
+          "json"
+        );
+      });
+
+      function customBootBox(type, title, msg, url) {
+        switch (type) {
+          case "success":
+            var successBootbox = bootbox.dialog({
+              title: "<div>" + title + "</div>",
+              message: '<div style="word-break:keep-all;">' + msg + "</div>",
+              buttons: {
+                success: {
+                  label: "확인",
+                  className: "btn-lawdians w-50 text-center",
+                  callback: function() {
+                    if (url.length !== 0) {
+                      location.href = url;
+                    }
+                  }
+                }
+              }
+            });
+            // successBootbox.on('shown.bs.modal', function(){
+            //     successBootbox.attr('id', 'bootbox-id');
+            // });
+            successBootbox.init(function() {
+              successBootbox.attr("id", "bootbox-id");
+              $("#bootbox-id")
+                .find(".modal-content")
+                .prepend(
+                  '<div class="w-100" style="border-top:3px solid #2a2a4c;"></div>'
+                );
+              $("#bootbox-id")
+                .find(".modal-content")
+                .css({ "border-radius": "0" });
+              $("#bootbox-id")
+                .find(".modal-title")
+                .css({ width: "100%" });
+              $("#bootbox-id")
+                .find(".modal-title")
+                .addClass("text-center");
+              $("#bootbox-id")
+                .find(".modal-title")
+                .prepend(
+                  '<i class="far fa-check-circle text-lawdians" style="font-size:45px;"></i>'
+                );
+              // $('#bootbox-id').find('.modal-title').prepend('<i class="fa fa-exclamation-circle text-lawdians" style="font-size:45px;"></i>');
+              $("#bootbox-id")
+                .find(".bootbox-close-button")
+                .hide();
+              $("#bootbox-id")
+                .find(".modal-footer")
+                .css({ "border-top": "0", "justify-content": "center" });
+              $("#bootbox-id")
+                .find(".modal-footer")
+                .addClass("text-center mb-3");
+              // $('#bootbox-id').css({'max-width':'600px'});
+              $("#bootbox-id")
+                .find(".close")
+                .css({
+                  border: "1px solid #eee",
+                  "background-color": "#eee",
+                  "border-radius": "100px",
+                  padding: "0",
+                  width: "25px"
+                });
+              $("#bootbox-id")
+                .find(".bootbox-body")
+                .addClass("text-center mt-2");
+              // $('#bootbox-id').find('.modal-header').prepend('<div style="width:25px;"></div>');
+            });
+            break;
+
+          case "danger":
+            var dangerBootbox = bootbox.dialog({
+              title: "<div>" + title + "</div>",
+              message: '<span style="word-break:keep-all;">' + msg + "</span>",
+              buttons: {
+                success: {
+                  label: "확인",
+                  className: "btn-lawdians w-50 text-center",
+                  callback: function() {
+                    if (url.length !== 0) {
+                      location.href = url;
+                    }
+                  }
+                }
+              }
+            });
+            // dangerBootbox.on('shown.bs.modal', function(){
+            //     dangerBootbox.attr('id', 'bootbox-id');
+            // });
+            dangerBootbox.init(function() {
+              dangerBootbox.attr("id", "bootbox-id");
+              $("#bootbox-id")
+                .find(".modal-content")
+                .prepend(
+                  '<div class="w-100" style="border-top:3px solid #2a2a4c;"></div>'
+                );
+              $("#bootbox-id")
+                .find(".modal-content")
+                .css({ "border-radius": "0" });
+              $("#bootbox-id")
+                .find(".modal-title")
+                .css({ width: "100%" });
+              $("#bootbox-id")
+                .find(".modal-title")
+                .addClass("text-center");
+              // $('.modal-dialog').find('.modal-title').prepend('<i class="far fa-check-circle text-lawdians" style="font-size:45px;"></i>');
+              $("#bootbox-id")
+                .find(".modal-title")
+                .prepend(
+                  '<i class="fa fa-exclamation-circle text-lawdians" style="font-size:45px;"></i>'
+                );
+              $("#bootbox-id")
+                .find(".modal-footer")
+                .css({ "border-top": "0", "justify-content": "center" });
+              $("#bootbox-id")
+                .find(".modal-footer")
+                .addClass("text-center mb-3");
+              $("#bootbox-id")
+                .find(".bootbox-close-button")
+                .hide();
+              // $('#bootbox-id').css({'max-width':'600px'});
+              $("#bootbox-id")
+                .find(".close")
+                .css({
+                  border: "1px solid #eee",
+                  "background-color": "#eee",
+                  "border-radius": "100px",
+                  padding: "0",
+                  width: "25px"
+                });
+              $("#bootbox-id")
+                .find(".bootbox-body")
+                .addClass("text-center mt-2");
+              // $('#bootbox-id').find('.modal-header').prepend('<div style="width:25px;"></div>');
+            });
+            break;
+          case "confirm":
+            var confirmBootbox = bootbox.confirm({
+              title: '<div class="font-JUA">로그인 필요</div>',
+              message: '<div class="font-JUA">로그인 페이지로 이동합니다</div>',
+              buttons: {
+                confirm: {
+                  label: "확인",
+                  className: "bg-lawdians text-white px-5"
+                },
+                cancel: {
+                  label: "취소",
+                  className: "bg-white border px-5"
+                }
+              },
+              callback: function(result) {
+                if (result) {
+                  location.href = "/users/login";
+                }
+              }
+            });
+            confirmBootbox.init(function() {
+              $(".modal-content").prepend(
+                '<div class="w-100" style="border-top:3px solid #2a2a4c;"></div>'
+              );
+              $(".modal-content").css({ "border-radius": "0" });
+              $(".modal-dialog")
+                .find(".modal-title")
+                .css({ width: "100%" });
+              $(".modal-dialog")
+                .find(".modal-title")
+                .addClass("text-center");
+              $(".modal-dialog")
+                .find(".modal-title")
+                .prepend(
+                  '<i class="far fa-check-circle text-lawdians" style="font-size:45px;"></i>'
+                );
+              $(".modal-dialog")
+                .find(".modal-footer")
+                .css({ "border-top": "0" });
+              $(".modal-dialog")
+                .find(".modal-footer")
+                .addClass("text-center mb-3 justify-content-center");
+              $(".modal-dialog").css({ "max-width": "500px" });
+              $(".close").css({ padding: "0", width: "25px" });
+              $(".modal-dialog")
+                .find(".bootbox-body")
+                .addClass("text-center");
+              $(".modal-dialog")
+                .find(".bootbox-body")
+                .addClass("mt-2");
+            });
+            break;
+        }
+      }
+    </script>
+  </body>
+</html>
